@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
   return (
     <div className="flex h-[50px] w-screen items-center justify-between bg-bg-200 px-20 shadow">
       <Link href="/" className="flex-1 ">
-        <Image src="/White Logo.png" alt="" width={30} height={10} />
+        <Image src="/logo.svg" alt="" width={30} height={10} />
       </Link>
       {sessionData?.user.roomId && <Tab {...roomTab} />}
       <button

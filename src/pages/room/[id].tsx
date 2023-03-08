@@ -32,7 +32,10 @@ const Room: React.FC = () => {
     );
 
   return (
-    <Layout title="Room" loading={!room?.members.map((user) => user.id)}>
+    <Layout
+      title={`Room ${(id ?? "").toUpperCase()}`}
+      loading={!room?.members.map((user) => user.id)}
+    >
       <h1 className="w-full px-8 text-left">
         Room <span className="text-highlight">{id?.toUpperCase()}</span>
       </h1>
