@@ -10,10 +10,10 @@ export const Header: React.FC<{ title?: string }> = ({ title }) => {
         content={`${title ? title + " | " : ""}Neighbors`}
       />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="" />
+      <meta property="og:url" content="https://neighbors-game.vercel.app" />
       <meta
         property="og:description"
-        content="Because digital is better than paper."
+        content="Because digital is better than paper"
       />
     </Head>
   );
