@@ -138,7 +138,9 @@ export const roomRouter = createTRPCRouter({
                   roomId: input.id,
                   tiles: {
                     createMany: {
-                      data: new Array(25).fill(0).map(() => ({ value: -1 })),
+                      data: new Array(25)
+                        .fill(0)
+                        .map((_, i) => ({ value: -1, idx: i })),
                     },
                   },
                 },
@@ -154,5 +156,19 @@ export const roomRouter = createTRPCRouter({
         }),
         ...makeBoards,
       ]);
+    }),
+
+  placeNumber: protectedProcedure
+    .input(z.object({ idx: z.number(), value: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const board = await ctx.prisma.board.findUnique({
+        where: { userId: ctx.session.user.id },
+        select: { id: true },
+      });
+
+      return await ctx.prisma.tile.update({
+        where: { boardId_idx: { boardId: board?.id ?? "", idx: input.idx } },
+        data: { value: input.value },
+      });
     }),
 });

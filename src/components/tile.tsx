@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from "react";
+import { api } from "~/utils/api";
 import { cn } from "~/utils/cn";
 
 const Tile: React.FC<{
@@ -7,6 +9,8 @@ const Tile: React.FC<{
   stepNext: () => void;
 }> = ({ idx, nextVal, stepNext }) => {
   const [value, setValue] = useState(-1);
+  const placeNumber = api.room.placeNumber.useMutation();
+
   return (
     <div
       className={cn(
@@ -16,10 +20,11 @@ const Tile: React.FC<{
         (idx + 1) % 5 === 0 && "border-r-2",
         idx % 5 === 0 && "border-l-2"
       )}
-      onClick={() => {
+      onClick={async () => {
         if (value !== -1) return;
         setValue(nextVal);
         stepNext();
+        await placeNumber.mutateAsync({ value: nextVal, idx: idx });
       }}
     >
       <p

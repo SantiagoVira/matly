@@ -83,11 +83,14 @@ model Board{
 model Tile{
   id         String @id @default(cuid())
   value      Int
+  idx        Int
 
   board        Board? @relation(fields: [boardId], references: [id])
   boardId      String?
+  
 
   @@index([boardId])
+  @@unique([boardId, idx])
 }
 
 model Room{
