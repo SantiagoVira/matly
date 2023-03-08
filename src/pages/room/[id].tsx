@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
+import { cn } from "~/utils/cn";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -47,11 +48,15 @@ const Room: React.FC = () => {
         {room?.members[0]?.id === sessionData?.user.id && (
           <Button
             onClick={async () => {
+              if (room.playing) return;
               await startGame.mutateAsync({ id: id ?? "" });
             }}
-            className="font-medium text-highlight"
+            className={cn(
+              "font-medium",
+              room.playing ? "text-rose-600" : "text-highlight"
+            )}
           >
-            Start Game
+            {room.playing ? "End " : "Start "}Game
           </Button>
         )}
       </div>
