@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
 import { cn } from "~/utils/cn";
+import * as sr from "seedrandom";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -19,6 +21,15 @@ const Room: React.FC = () => {
       await ctx.invalidate();
     },
   });
+
+  const nums = new Array(25)
+    .fill(0)
+    .map(
+      (_, i) =>
+        Math.floor(sr.default((id ?? "helloworld") + i.toString())() * 10) + 1
+    );
+  const [idx, setIdx] = useState(0);
+
   if (
     (status === "authenticated" &&
       sessionData?.user.id &&
@@ -65,8 +76,35 @@ const Room: React.FC = () => {
         <hr className="w-full border-[#9e9e9e] " />
       </div>
       {room.playing ? (
-        <div className="flex h-full w-full items-center justify-center">
-          <Board seed={id ?? "helloworld"} />
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="flex w-full">
+            <h3 className="flex-[2] text-center">
+              Next Number: <span className="text-highlight">{nums[idx]}</span>
+            </h3>
+            {idx >= 25 && <h4 className="flex-1 text-left">Leaderboard</h4>}
+          </div>
+          <div className="flex w-full">
+            <div className="flex flex-[2] flex-col items-center justify-center">
+              <Board
+                nums={nums}
+                idx={idx}
+                stepNext={() => setIdx((i) => i + 1)}
+              />
+            </div>
+            {idx >= 25 && (
+              <div className="flex min-h-full w-full flex-1 flex-col items-start justify-start">
+                {room.members
+                  .filter((user) => user.score >= 0)
+                  .map((user, i) => (
+                    <ol className="ml-4 list-decimal" key={i}>
+                      <li>
+                        {user.name} - <span className="text-highlight"></span>
+                      </li>
+                    </ol>
+                  ))}
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <>

@@ -60,6 +60,7 @@ model User {
     roomId        String?
     joinedRoomOn  DateTime?
     board         Board?
+    score         Int @default(-1)
 
     @@index([roomId])
 }

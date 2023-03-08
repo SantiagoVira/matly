@@ -144,6 +144,7 @@ export const roomRouter = createTRPCRouter({
           ctx.prisma.user.update({
             where: { id: user?.id ?? "" },
             data: {
+              score: -1,
               board: {
                 disconnect: true,
                 create: {
