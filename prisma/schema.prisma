@@ -73,33 +73,25 @@ model VerificationToken {
 
 model Board{
   id        String @id @default(cuid())
-  tiles     TileRow[]
+  tiles     Tile[] 
   
   user      User @relation(fields: [userId], references: [id])
   userId    String @unique
-}
-
-model TileRow{
-  id          String @id @default(cuid())
-  tiles       Tile[]
-
-  board       Board? @relation(fields: [boardId], references: [id])
-  boardId     String?
-
-  @@index([boardId])
+  roomId    String @unique
 }
 
 model Tile{
   id         String @id @default(cuid())
   value      Int
 
-  row        TileRow? @relation(fields: [rowId], references: [id])
-  rowId      String?
+  board        Board? @relation(fields: [boardId], references: [id])
+  boardId      String?
 
-  @@index([rowId])
+  @@index([boardId])
 }
 
 model Room{
   id          String @id @default(cuid())
   members     User[]
+  playing     Boolean @default(false)
 }

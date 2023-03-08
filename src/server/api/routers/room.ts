@@ -66,6 +66,18 @@ export const roomRouter = createTRPCRouter({
   join: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.roomId) {
+        const oldRoom = await ctx.prisma.room.findUnique({
+          where: { id: ctx.session.user.roomId },
+          include: { members: true },
+        });
+        if (oldRoom?.members.length && oldRoom?.members.length <= 1) {
+          await ctx.prisma.room.delete({
+            where: { id: ctx.session.user.roomId },
+          });
+        }
+      }
+
       return await ctx.prisma.room.update({
         where: {
           id: input.id,
@@ -81,6 +93,18 @@ export const roomRouter = createTRPCRouter({
     }),
 
   leave: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.session.user.roomId) {
+      const oldRoom = await ctx.prisma.room.findUnique({
+        where: { id: ctx.session.user.roomId },
+        include: { members: true },
+      });
+      if (oldRoom?.members.length && oldRoom?.members.length <= 1) {
+        await ctx.prisma.room.delete({
+          where: { id: ctx.session.user.roomId },
+        });
+      }
+    }
+
     return await ctx.prisma.user.update({
       where: {
         id: ctx.session.user.id,
@@ -95,4 +119,39 @@ export const roomRouter = createTRPCRouter({
       },
     });
   }),
+
+  startGame: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const membersQuery = await ctx.prisma.room.findUnique({
+        where: { id: input.id },
+        select: { members: true },
+      });
+      const makeBoards =
+        membersQuery?.members.map((user) =>
+          ctx.prisma.user.update({
+            where: { id: user?.id ?? "" },
+            data: {
+              board: {
+                create: {
+                  roomId: input.id,
+                  tiles: {
+                    createMany: {
+                      data: new Array(25).fill(0).map(() => ({ value: -1 })),
+                    },
+                  },
+                },
+              },
+            },
+          })
+        ) ?? [];
+
+      await ctx.prisma.$transaction([
+        ctx.prisma.room.update({
+          where: { id: input.id },
+          data: { playing: true },
+        }),
+        ...makeBoards,
+      ]);
+    }),
 });

@@ -63,7 +63,7 @@ const Home: NextPage = () => {
                 onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
               />
               <Button
-                className="h-10 rounded-l-none shadow"
+                className="h-10 w-36 rounded-l-none shadow"
                 onClick={async () => {
                   await roomExists.refetch();
                   if (!roomExists.data) {

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Layout from "~/components/shared/layout";
+import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
 
 const Room: React.FC = () => {
@@ -9,6 +11,7 @@ const Room: React.FC = () => {
   const id = router.query.id?.toString();
   const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
   const room = roomQuery.data;
+  const startGame = api.room.startGame.useMutation();
 
   console.log(
     room?.members.map((user) => user.id),
@@ -16,9 +19,10 @@ const Room: React.FC = () => {
   );
 
   if (
-    status === "authenticated" &&
-    sessionData?.user.id &&
-    !room?.members.map((user) => user.id).includes(sessionData?.user.id)
+    (status === "authenticated" &&
+      sessionData?.user.id &&
+      !room?.members.map((user) => user.id).includes(sessionData?.user.id)) ||
+    !room
   )
     return (
       <Layout>
@@ -36,9 +40,22 @@ const Room: React.FC = () => {
       title={`Room ${(id ?? "").toUpperCase()}`}
       loading={!room?.members.map((user) => user.id)}
     >
-      <h1 className="w-full px-8 text-left">
-        Room <span className="text-highlight">{id?.toUpperCase()}</span>
-      </h1>
+      <div className="flex w-full items-center justify-between px-8">
+        <h1 className="text-left">
+          Room <span className="text-highlight">{id?.toUpperCase()}</span>
+        </h1>
+        {room?.members[0]?.id === sessionData?.user.id && (
+          <Button
+            onClick={async () => {
+              await startGame.mutateAsync({ id: id ?? "" });
+            }}
+            className="font-medium text-highlight"
+          >
+            Start Game
+          </Button>
+        )}
+      </div>
+
       <div className="my-4 w-full px-8">
         <hr className="w-full border-[#9e9e9e] " />
       </div>
