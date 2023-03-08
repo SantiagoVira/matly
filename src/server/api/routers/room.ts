@@ -29,7 +29,7 @@ export const roomRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.room.findUnique({
         where: { id: input.id },
-        include: { members: true },
+        include: { members: { orderBy: { joinedRoomOn: "asc" } } },
       });
     }),
 
@@ -51,16 +51,22 @@ export const roomRouter = createTRPCRouter({
       code = randomBytes(2).toString("hex").toLowerCase();
     } while (await ctx.prisma.room.findUnique({ where: { id: code } }));
 
-    return await ctx.prisma.room.create({
-      data: {
-        id: code,
-        members: {
-          connect: {
-            id: ctx.session.user.id,
+    return await ctx.prisma.$transaction([
+      ctx.prisma.room.create({
+        data: {
+          id: code,
+          members: {
+            connect: {
+              id: ctx.session.user.id,
+            },
           },
         },
-      },
-    });
+      }),
+      ctx.prisma.user.update({
+        where: { id: ctx.session.user.id },
+        data: { joinedRoomOn: new Date() },
+      }),
+    ]);
   }),
 
   join: protectedProcedure
@@ -78,18 +84,24 @@ export const roomRouter = createTRPCRouter({
         }
       }
 
-      return await ctx.prisma.room.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          members: {
-            connect: {
-              id: ctx.session.user.id,
+      return await ctx.prisma.$transaction([
+        ctx.prisma.room.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            members: {
+              connect: {
+                id: ctx.session.user.id,
+              },
             },
           },
-        },
-      });
+        }),
+        ctx.prisma.user.update({
+          where: { id: ctx.session.user.id },
+          data: { joinedRoomOn: new Date() },
+        }),
+      ]);
     }),
 
   leave: protectedProcedure.mutation(async ({ ctx }) => {
@@ -125,7 +137,7 @@ export const roomRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const membersQuery = await ctx.prisma.room.findUnique({
         where: { id: input.id },
-        select: { members: true },
+        select: { members: { orderBy: { joinedRoomOn: "asc" } } },
       });
       const makeBoards =
         membersQuery?.members.map((user) =>

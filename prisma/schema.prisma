@@ -58,6 +58,7 @@ model User {
 
     room          Room? @relation(fields: [roomId], references: [id])
     roomId        String?
+    joinedRoomOn  DateTime?
     board         Board?
 
     @@index([roomId])
@@ -77,7 +78,7 @@ model Board{
   
   user      User? @relation(fields: [userId], references: [id])
   userId    String? @unique
-  roomId    String @unique
+  roomId    String
 }
 
 model Tile{
@@ -89,7 +90,6 @@ model Tile{
   boardId      String?
   
 
-  @@index([boardId])
   @@unique([boardId, idx])
 }
 
