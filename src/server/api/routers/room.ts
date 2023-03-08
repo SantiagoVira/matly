@@ -5,7 +5,6 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { api } from "~/utils/api";
 
 export const roomRouter = createTRPCRouter({
   hello: publicProcedure
@@ -56,4 +55,20 @@ export const roomRouter = createTRPCRouter({
       },
     });
   }),
+  join: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.room.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          members: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+      });
+    }),
 });
