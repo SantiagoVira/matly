@@ -62,6 +62,7 @@ export const roomRouter = createTRPCRouter({
       },
     });
   }),
+
   join: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -78,4 +79,20 @@ export const roomRouter = createTRPCRouter({
         },
       });
     }),
+
+  leave: protectedProcedure.mutation(async ({ ctx }) => {
+    return await ctx.prisma.user.update({
+      where: {
+        id: ctx.session.user.id,
+      },
+      data: {
+        room: {
+          disconnect: true,
+        },
+      },
+      select: {
+        room: true,
+      },
+    });
+  }),
 });
