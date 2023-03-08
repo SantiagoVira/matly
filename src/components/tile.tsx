@@ -17,6 +17,7 @@ const Tile: React.FC<{
         idx % 5 === 0 && "border-l-2"
       )}
       onClick={() => {
+        if (value !== -1) return;
         setValue(nextVal);
         stepNext();
       }}
@@ -25,8 +26,13 @@ const Tile: React.FC<{
         className={cn(
           "text-4xl",
           value >= 0
-            ? "text-black"
-            : "text-transparent group-hover:text-black/50"
+            ? value === 10
+              ? "text-highlight"
+              : "text-black"
+            : "text-transparent " +
+                (nextVal === 10
+                  ? "group-hover:text-highlight/50"
+                  : "group-hover:text-black/50")
         )}
       >
         {value >= 0 ? value : nextVal >= 0 ? nextVal : ""}
