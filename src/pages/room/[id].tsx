@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
@@ -64,15 +65,23 @@ const Room: React.FC = () => {
       <div className="my-4 w-full px-8">
         <hr className="w-full border-[#9e9e9e] " />
       </div>
-      <div className="flex w-full items-center gap-2 px-10">
-        <h2>Members</h2>{" "}
-        <h2 className="font-extralight">- {room?.members.length}</h2>
-      </div>
-      {room?.members.map((user, i) => (
-        <p className="w-full px-14 text-left" key={i}>
-          {user.name}
-        </p>
-      ))}
+      {room.playing ? (
+        <div className="flex h-full w-full items-center justify-center">
+          <Board />
+        </div>
+      ) : (
+        <>
+          <div className="flex w-full items-center gap-2 px-10">
+            <h2>Members</h2>{" "}
+            <h2 className="font-extralight">- {room?.members.length}</h2>
+          </div>
+          {room?.members.map((user, i) => (
+            <p className="w-full px-14 text-left" key={i}>
+              {user.name}
+            </p>
+          ))}
+        </>
+      )}
     </Layout>
   );
 };
