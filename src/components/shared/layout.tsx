@@ -13,8 +13,6 @@ const Layout: React.FC<
 > = ({ title, className, loading, children }) => {
   const { status } = useSession();
 
-  console.log(status === "loading" || loading);
-
   return (
     <main className="flex min-h-screen flex-col items-center bg-bg-100 text-text-100">
       <Header title={title} />

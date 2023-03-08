@@ -13,13 +13,12 @@ const Room: React.FC = () => {
   const id = router.query.id?.toString();
   const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
   const room = roomQuery.data;
-  const startGame = api.room.startGame.useMutation();
-
-  console.log(
-    room?.members.map((user) => user.id),
-    sessionData?.user.id
-  );
-
+  const ctx = api.useContext();
+  const startGame = api.room.startGame.useMutation({
+    onSuccess: async () => {
+      await ctx.invalidate();
+    },
+  });
   if (
     (status === "authenticated" &&
       sessionData?.user.id &&
