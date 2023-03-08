@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
@@ -9,8 +10,14 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
-  const createMutation = api.room.create.useMutation();
-  const joinMutation = api.room.join.useMutation();
+  const router = useRouter();
+
+  const createMutation = api.room.create.useMutation({
+    onSuccess: (e) => router.push(`/room/${e.id}`),
+  });
+  const joinMutation = api.room.join.useMutation({
+    onSuccess: (e) => router.push(`/room/${e.id}`),
+  });
 
   const [joinCode, setJoinCode] = useState("");
 
