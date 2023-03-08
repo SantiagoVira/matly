@@ -20,5 +20,6 @@ declare module "next-auth" {
     room: Room?;
     roomId: string?;
     board: Board?;
+    score: number;
   }
 }

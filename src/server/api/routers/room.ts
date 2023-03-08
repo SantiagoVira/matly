@@ -1,29 +1,9 @@
 import { randomBytes } from "crypto";
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  // publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const roomRouter = createTRPCRouter({
-  // hello: publicProcedure
-  //   .input(z.object({ text: z.string() }))
-  //   .query(({ input }) => {
-  //     return {
-  //       greeting: `Hello ${input.text}`,
-  //     };
-  //   }),
-
-  // getAll: publicProcedure.query(({ ctx }) => {
-  //   return ctx.prisma.example.findMany();
-  // }),
-
-  // getSecretMessage: protectedProcedure.query(() => {
-  //   return "you can now see this secret message!";
-  // }),
-
   findUnique: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -129,6 +109,56 @@ export const roomRouter = createTRPCRouter({
       select: {
         room: true,
       },
+    });
+  }),
+
+  getBoard: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.board.findUnique({
+      where: { userId: ctx.session.user.id },
+      include: { tiles: true },
+    });
+  }),
+
+  scoreBoard: protectedProcedure.mutation(async ({ ctx }) => {
+    let score = 0;
+    const board = await ctx.prisma.board.findUnique({
+      where: { userId: ctx.session.user.id },
+      include: { tiles: true },
+    });
+
+    if (board?.tiles) {
+      for (let y = 0; y < 5; y++) {
+        let streak = 1;
+        let lastNum: number = board.tiles[y * 5 + 0]?.value ?? 0;
+        for (let x = 1; x < 5; x++) {
+          if (board.tiles[y * 5 + x]?.value === lastNum) streak++;
+          else {
+            if (streak > 1) score += lastNum * streak;
+            streak = 1;
+          }
+          lastNum = board.tiles[y * 5 + x]?.value ?? 0;
+        }
+        if (streak > 1) score += lastNum * streak;
+      }
+
+      for (let x = 0; x < 5; x++) {
+        let streak = 1;
+        let lastNum: number = board.tiles[x]?.value ?? 0;
+        for (let y = 1; y < 5; y++) {
+          if (board.tiles[y * 5 + x]?.value === lastNum) streak++;
+          else {
+            if (streak > 1) score += lastNum * streak;
+            streak = 1;
+          }
+          lastNum = board.tiles[y * 5 + x]?.value ?? 0;
+        }
+        if (streak > 1) score += lastNum * streak;
+      }
+    }
+
+    return await ctx.prisma.user.update({
+      where: { id: ctx.session.user.id },
+      data: { score: score },
     });
   }),
 

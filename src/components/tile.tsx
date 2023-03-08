@@ -6,9 +6,10 @@ import { cn } from "~/utils/cn";
 const Tile: React.FC<{
   idx: number;
   nextVal: number;
+  val?: number | undefined;
   stepNext: () => void;
-}> = ({ idx, nextVal, stepNext }) => {
-  const [value, setValue] = useState(-1);
+}> = ({ idx, nextVal, val = -1, stepNext }) => {
+  const [value, setValue] = useState(val);
   const placeNumber = api.room.placeNumber.useMutation();
 
   return (

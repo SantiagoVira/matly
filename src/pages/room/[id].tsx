@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
@@ -16,11 +16,15 @@ const Room: React.FC = () => {
   const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
   const room = roomQuery.data;
   const ctx = api.useContext();
+  const boardQuery = api.room.getBoard.useQuery();
+  const board = boardQuery.data;
+
   const startGame = api.room.startGame.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
     },
   });
+  const scoreBoard = api.room.scoreBoard.useMutation();
 
   const nums = new Array(25)
     .fill(0)
@@ -29,6 +33,19 @@ const Room: React.FC = () => {
         Math.floor(sr.default((id ?? "helloworld") + i.toString())() * 10) + 1
     );
   const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (idx >= 25 && sessionData?.user.score === -1) {
+      console.log("called");
+      scoreBoard.mutate();
+    }
+
+    console.log("hey", idx, sessionData?.user.score);
+  }, [idx, scoreBoard, sessionData]);
+
+  useEffect(() => {
+    setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
+  }, [board]);
 
   if (
     (status === "authenticated" &&
@@ -39,7 +56,7 @@ const Room: React.FC = () => {
     return (
       <Layout>
         <div className="flex h-full w-full flex-col items-center justify-center">
-          <h1>Class not found!</h1>
+          <h1>Room not found!</h1>
           <p>
             Make sure the code is correct and that you have joined this class.
           </p>
@@ -88,6 +105,7 @@ const Room: React.FC = () => {
               <Board
                 nums={nums}
                 idx={idx}
+                board={board}
                 stepNext={() => setIdx((i) => i + 1)}
               />
             </div>
@@ -98,7 +116,8 @@ const Room: React.FC = () => {
                   .map((user, i) => (
                     <ol className="ml-4 list-decimal" key={i}>
                       <li>
-                        {user.name} - <span className="text-highlight"></span>
+                        {user.name} -{" "}
+                        <span className="text-highlight">{user.score}</span>
                       </li>
                     </ol>
                   ))}
