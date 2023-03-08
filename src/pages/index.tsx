@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import clsx from "clsx";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -20,6 +21,10 @@ const Home: NextPage = () => {
   });
 
   const [joinCode, setJoinCode] = useState("");
+  const [isError, setIsError] = useState(false);
+  const roomExists = api.room.findUnique.useQuery({
+    id: joinCode,
+  });
 
   return (
     <Layout>
@@ -29,11 +34,29 @@ const Home: NextPage = () => {
             Create Room
           </Button>
           <div className="flex gap-4">
-            <Input
-              className="h-10 w-32"
-              onChange={(e) => setJoinCode(e.target.value)}
-            />
-            <Button onClick={() => joinMutation.mutateAsync({ id: joinCode })}>
+            <div className="flex flex-col items-start">
+              <Input
+                className={clsx(
+                  "h-10 w-32",
+                  isError && "border border-rose-600"
+                )}
+                onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
+              />
+              {isError && (
+                <p className="text-sm text-rose-600">Room not found</p>
+              )}
+            </div>
+
+            <Button
+              onClick={async () => {
+                await roomExists.refetch();
+                if (!roomExists.data) {
+                  setIsError(true);
+                  return;
+                }
+                await joinMutation.mutateAsync({ id: joinCode });
+              }}
+            >
               Join Room
             </Button>
           </div>

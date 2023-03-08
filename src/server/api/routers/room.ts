@@ -1,27 +1,28 @@
+import { randomBytes } from "crypto";
 import { z } from "zod";
 
 import {
   createTRPCRouter,
-  publicProcedure,
+  // publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
 
 export const roomRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
+  // hello: publicProcedure
+  //   .input(z.object({ text: z.string() }))
+  //   .query(({ input }) => {
+  //     return {
+  //       greeting: `Hello ${input.text}`,
+  //     };
+  //   }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.example.findMany();
-  }),
+  // getAll: publicProcedure.query(({ ctx }) => {
+  //   return ctx.prisma.example.findMany();
+  // }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+  // getSecretMessage: protectedProcedure.query(() => {
+  //   return "you can now see this secret message!";
+  // }),
 
   findUnique: protectedProcedure
     .input(z.object({ id: z.string() }))
@@ -45,8 +46,14 @@ export const roomRouter = createTRPCRouter({
       }
     }
 
+    let code;
+    do {
+      code = randomBytes(2).toString("hex").toLowerCase();
+    } while (await ctx.prisma.room.findUnique({ where: { id: code } }));
+
     return await ctx.prisma.room.create({
       data: {
+        id: code,
         members: {
           connect: {
             id: ctx.session.user.id,
