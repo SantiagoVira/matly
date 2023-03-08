@@ -3,32 +3,34 @@ import { cn } from "~/utils/cn";
 
 const Tile: React.FC<{
   idx: number;
-  canClick: number;
-  setCanClick: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ idx, canClick, setCanClick }) => {
+  nextVal: number;
+  stepNext: () => void;
+}> = ({ idx, nextVal, stepNext }) => {
   const [value, setValue] = useState(-1);
   return (
     <div
       className={cn(
-        `-px-1 flex h-full w-full items-center justify-center border border-black hover:bg-slate-50/80`,
+        `-px-1 group flex h-full w-full items-center justify-center border border-black hover:bg-slate-50/80`,
         idx < 5 && "border-t-2",
         idx > 19 && "border-b-2",
         (idx + 1) % 5 === 0 && "border-r-2",
         idx % 5 === 0 && "border-l-2"
       )}
       onClick={() => {
-        if (canClick >= 0) {
-          setValue(canClick);
-          console.log(canClick);
-          setCanClick(-1);
-          setTimeout(
-            () => setCanClick(Math.floor(Math.random() * 10) + 1),
-            1000
-          );
-        }
+        setValue(nextVal);
+        stepNext();
       }}
     >
-      <p className="text-4xl">{value >= 0 ? value : ""}</p>
+      <p
+        className={cn(
+          "text-4xl",
+          value >= 0
+            ? "text-black"
+            : "text-transparent group-hover:text-black/50"
+        )}
+      >
+        {value >= 0 ? value : nextVal >= 0 ? nextVal : ""}
+      </p>
     </div>
   );
 };

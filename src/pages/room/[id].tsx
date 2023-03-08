@@ -67,7 +67,7 @@ const Room: React.FC = () => {
       </div>
       {room.playing ? (
         <div className="flex h-full w-full items-center justify-center">
-          <Board />
+          <Board seed={id ?? "helloworld"} />
         </div>
       ) : (
         <>
