@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import clsx from "clsx";
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Layout from "~/components/shared/layout";
@@ -10,7 +9,6 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const { data: sessionData } = useSession();
   const router = useRouter();
 
   const createMutation = api.room.create.useMutation({
@@ -28,44 +26,29 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      {sessionData?.user ? (
-        <>
-          <Button onClick={() => createMutation.mutateAsync()}>
-            Create Room
-          </Button>
-          <div className="flex gap-4">
-            <div className="flex flex-col items-start">
-              <Input
-                className={clsx(
-                  "h-10 w-32",
-                  isError && "border border-rose-600"
-                )}
-                onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
-              />
-              {isError && (
-                <p className="text-sm text-rose-600">Room not found</p>
-              )}
-            </div>
-
-            <Button
-              onClick={async () => {
-                await roomExists.refetch();
-                if (!roomExists.data) {
-                  setIsError(true);
-                  return;
-                }
-                await joinMutation.mutateAsync({ id: joinCode });
-              }}
-            >
-              Join Room
-            </Button>
-          </div>
-        </>
-      ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center">
-          <h1>To begin, sign in!</h1>
+      <Button onClick={() => createMutation.mutateAsync()}>Create Room</Button>
+      <div className="flex gap-4">
+        <div className="flex flex-col items-start">
+          <Input
+            className={clsx("h-10 w-32", isError && "border border-rose-600")}
+            onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
+          />
+          {isError && <p className="text-sm text-rose-600">Room not found</p>}
         </div>
-      )}
+
+        <Button
+          onClick={async () => {
+            await roomExists.refetch();
+            if (!roomExists.data) {
+              setIsError(true);
+              return;
+            }
+            await joinMutation.mutateAsync({ id: joinCode });
+          }}
+        >
+          Join Room
+        </Button>
+      </div>
     </Layout>
   );
 };
