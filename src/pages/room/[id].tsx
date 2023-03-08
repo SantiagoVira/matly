@@ -111,17 +111,17 @@ const Room: React.FC = () => {
             </div>
             {idx >= 25 && (
               <div className="flex min-h-full w-full flex-1 flex-col items-start justify-start">
-                {room.members
-                  .filter((user) => user.score >= 0)
-                  .sort((a, b) => a.score - b.score)
-                  .map((user, i) => (
-                    <ol className="ml-4 list-decimal" key={i}>
-                      <li>
+                <ol className="ml-4 list-decimal">
+                  {room.members
+                    .filter((user) => user.score >= 0)
+                    .sort((a, b) => b.score - a.score)
+                    .map((user, i) => (
+                      <li key={i}>
                         {user.name} -{" "}
                         <span className="text-highlight">{user.score}</span>
                       </li>
-                    </ol>
-                  ))}
+                    ))}
+                </ol>
               </div>
             )}
           </div>
