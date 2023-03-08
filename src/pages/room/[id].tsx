@@ -113,6 +113,7 @@ const Room: React.FC = () => {
               <div className="flex min-h-full w-full flex-1 flex-col items-start justify-start">
                 {room.members
                   .filter((user) => user.score >= 0)
+                  .sort((a, b) => a.score - b.score)
                   .map((user, i) => (
                     <ol className="ml-4 list-decimal" key={i}>
                       <li>

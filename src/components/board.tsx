@@ -1,4 +1,4 @@
-import type { Board, Tile as PrismaTile } from "@prisma/client";
+import { Board, type Tile as PrismaTile } from "@prisma/client";
 import Tile from "./tile";
 
 const Board: React.FC<{
