@@ -19,12 +19,12 @@ const Room: React.FC = () => {
   const [idx, setIdx] = useState(0);
   const id = router.query.id?.toString();
 
-  const startGame = api.room.startGame.useMutation({
+  const startGame = api.game.start.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
     },
   });
-  const scoreBoard = api.room.scoreBoard.useMutation({
+  const scoreBoard = api.board.score.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
     },
@@ -32,7 +32,7 @@ const Room: React.FC = () => {
 
   const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
   const room = roomQuery.data;
-  const boardQuery = api.room.getBoard.useQuery();
+  const boardQuery = api.board.findUnique.useQuery();
   const board = boardQuery.data;
 
   useEffect(() => {

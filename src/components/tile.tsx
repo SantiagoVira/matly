@@ -10,7 +10,7 @@ const Tile: React.FC<{
   stepNext: () => void;
 }> = ({ idx, nextVal, val = -1, stepNext }) => {
   const [value, setValue] = useState(val);
-  const placeNumber = api.room.placeNumber.useMutation();
+  const placeNumber = api.board.placeNumber.useMutation();
 
   return (
     <div
