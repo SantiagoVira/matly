@@ -71,6 +71,12 @@ const Room: React.FC = () => {
         document.dispatchEvent(new Event("visibilitychange"));
       });
     }
+
+    return () => {
+      if (pusher.current) {
+        pusher.current.disconnect();
+      }
+    };
   }, [id, ctx]);
 
   useEffect(() => {
