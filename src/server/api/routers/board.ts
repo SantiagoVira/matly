@@ -23,6 +23,8 @@ export const boardRouter = createTRPCRouter({
       include: { tiles: true },
     });
 
+    if (board?.tiles.filter((t) => t.value === -1).length) return;
+
     if (board?.tiles) {
       for (let y = 0; y < 5; y++) {
         let streak = 1;

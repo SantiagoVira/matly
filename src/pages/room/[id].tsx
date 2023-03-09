@@ -48,7 +48,6 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Connect to pusher
-    console.log("Gah", id);
     if (id && !pusher.current) {
       pusher.current = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -140,7 +139,6 @@ const Room: React.FC = () => {
                 idx={idx}
                 board={board}
                 stepNext={() => {
-                  console.log(idx);
                   setIdx((i) => i + 1);
                 }}
               />
