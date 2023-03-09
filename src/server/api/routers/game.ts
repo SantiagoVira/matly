@@ -47,9 +47,8 @@ export const gameRouter = createTRPCRouter({
   end: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const end = await ctx.prisma.room.update({
+      const end = await ctx.prisma.room.delete({
         where: { id: input.id },
-        data: { playing: false },
       });
       await invalidateRoom(input.id);
       return end;

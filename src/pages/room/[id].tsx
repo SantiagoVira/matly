@@ -27,6 +27,12 @@ const Room: React.FC = () => {
       await ctx.invalidate();
     },
   });
+  const endGame = api.game.end.useMutation({
+    onSuccess: async () => {
+      await ctx.invalidate();
+      router.push("/");
+    },
+  });
   const scoreBoard = api.board.score.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
@@ -40,12 +46,14 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Connect to pusher
+    console.log("Gah", id);
     if (id) {
       const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
       });
       channel.subscribe(id);
-      channel.bind("invalidate", () => ctx.room.invalidate());
+      channel.unbind_all();
+      channel.bind("invalidate", () => ctx.invalidate());
     }
   }, [id, ctx.room]);
 
@@ -55,10 +63,12 @@ const Room: React.FC = () => {
       scoreBoard.mutate();
       setIdx(26);
     }
+  }, [idx, scoreBoard, setIdx, board]);
 
+  useEffect(() => {
     // Pick up previous progress
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
-  }, [idx, scoreBoard, setIdx, board]);
+  }, [board]);
 
   const nums = new Array(25)
     .fill(0)
@@ -87,8 +97,8 @@ const Room: React.FC = () => {
         {room?.members[0]?.id === sessionData?.user.id && (
           <Button
             onClick={async () => {
-              if (room.playing) return;
-              await startGame.mutateAsync({ id: id ?? "" });
+              if (room.playing) await endGame.mutateAsync({ id: id ?? "" });
+              else await startGame.mutateAsync({ id: id ?? "" });
             }}
             className={cn(
               "font-medium",
@@ -117,7 +127,10 @@ const Room: React.FC = () => {
                 nums={nums}
                 idx={idx}
                 board={board}
-                stepNext={() => setIdx((i) => i + 1)}
+                stepNext={() => {
+                  console.log(idx);
+                  setIdx((i) => i + 1);
+                }}
               />
             </div>
             {idx >= 25 && <Leaderboard room={room} />}

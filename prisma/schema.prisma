@@ -56,7 +56,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
-    room          Room? @relation(fields: [roomId], references: [id])
+    room          Room? @relation(fields: [roomId], references: [id], onDelete: SetNull)
     roomId        String?
     joinedRoomOn  DateTime?
     board         Board?
