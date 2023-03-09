@@ -1,5 +1,7 @@
 import Pusher from "pusher";
 import { env } from "~/env.mjs";
+import * as superjson from "superjson";
+import type { User } from "next-auth";
 
 export const pusher = new Pusher({
   appId: env.PUSHER_ID,
@@ -9,6 +11,12 @@ export const pusher = new Pusher({
   useTLS: true,
 });
 
-export const invalidateRoom = async (roomId: string) => {
-  await pusher.trigger(roomId, "invalidate", {});
+export const invalidateRoom = async (roomId: string, user: User) => {
+  await pusher.trigger(roomId, "invalidate", {
+    raw: superjson.stringify({
+      userId: user.id,
+      redeemedAt: Date.now(),
+      user: user,
+    }),
+  });
 };

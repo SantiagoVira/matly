@@ -94,7 +94,7 @@ export const roomRouter = createTRPCRouter({
         }),
       ]);
 
-      await invalidateRoom(input.id);
+      await invalidateRoom(input.id, ctx.session.user);
 
       return execute;
     }),

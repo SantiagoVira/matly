@@ -41,7 +41,7 @@ export const gameRouter = createTRPCRouter({
         ...makeBoards,
       ]);
 
-      await invalidateRoom(input.id);
+      await invalidateRoom(input.id, ctx.session.user);
     }),
 
   end: protectedProcedure
@@ -50,7 +50,7 @@ export const gameRouter = createTRPCRouter({
       const end = await ctx.prisma.room.delete({
         where: { id: input.id },
       });
-      await invalidateRoom(input.id);
+      await invalidateRoom(input.id, ctx.session.user);
       return end;
     }),
 });

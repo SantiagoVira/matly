@@ -59,7 +59,7 @@ export const boardRouter = createTRPCRouter({
     });
 
     if (board) {
-      await invalidateRoom(board?.roomId);
+      await invalidateRoom(board?.roomId, ctx.session.user);
     }
 
     return updateScore;

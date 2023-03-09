@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
@@ -16,6 +16,7 @@ import RoomNotFound from "~/components/room/room-not-found";
 
 const Room: React.FC = () => {
   const router = useRouter();
+  const pusher = useRef<Pusher>();
   const ctx = api.useContext();
   const { data: sessionData, status } = useSession();
 
@@ -47,18 +48,23 @@ const Room: React.FC = () => {
   useEffect(() => {
     // Connect to pusher
     console.log("Gah", id);
-    if (id) {
-      const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
+    if (id && !pusher.current) {
+      pusher.current = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
+        userAuthentication: {
+          endpoint: "/api/pusher/auth",
+          transport: "ajax",
+        },
       });
-      console.log(channel.connection.state);
-      if (channel.connection.state !== "connected") {
-        console.log("Joining");
-        channel.unsubscribe(id);
-        channel.unbind_all();
-        channel.subscribe(id);
-        channel.bind("invalidate", () => ctx.invalidate());
-      }
+
+      pusher.current.unsubscribe(id);
+      pusher.current.unbind_all();
+      pusher.current.subscribe(id);
+      pusher.current.bind("invalidate", async () => {
+        await ctx.invalidate();
+
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
     }
   }, [id, ctx]);
 

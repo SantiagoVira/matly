@@ -27,7 +27,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "seedrandom": "^3.0.5",
-    "superjson": "1.9.1",
+    "superjson": "^1.12.2",
     "tailwind-merge": "^1.10.0",
     "zod": "^3.20.6"
   },
