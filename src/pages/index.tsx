@@ -63,6 +63,21 @@ const Home: NextPage = () => {
           >
             Leave Current Room
           </Button>
+          <Button
+            className="text-text-100"
+            onClick={() =>
+              router.push(
+                `https://docs.google.com/document/d/e/2PACX-1vSvx5xgnZhzNR_Z8AhrNqodWxilU2tI7DMXG1XjmHU2IzLaoQeq3C0I9VzFnulqazCtvA8dAGQW9DSV/pub`
+              )
+            }
+          >
+            How to Play
+          </Button>
+
+          <iframe
+            className="mx-auto w-screen"
+            src="https://docs.google.com/document/d/e/2PACX-1vSvx5xgnZhzNR_Z8AhrNqodWxilU2tI7DMXG1XjmHU2IzLaoQeq3C0I9VzFnulqazCtvA8dAGQW9DSV/pub?embedded=true"
+          ></iframe>
         </div>
       ) : (
         <>
