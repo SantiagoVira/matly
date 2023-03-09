@@ -66,6 +66,16 @@ const Home: NextPage = () => {
                   "h-10 w-32 rounded-r-none",
                   isError && "border border-rose-600"
                 )}
+                onKeyDown={async (e) => {
+                  if (e.key === "Enter") {
+                    await roomExists.refetch();
+                    if (!roomExists.data) {
+                      setIsError(true);
+                      return;
+                    }
+                    await joinMutation.mutateAsync({ id: joinCode });
+                  }
+                }}
                 onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
               />
               <Button
