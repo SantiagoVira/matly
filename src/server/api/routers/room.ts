@@ -177,7 +177,6 @@ export const roomRouter = createTRPCRouter({
 
     if (board) {
       await invalidateRoom(board?.roomId);
-      console.log("\n\n\nFINITO\n\n\n");
     }
 
     return updateScore;

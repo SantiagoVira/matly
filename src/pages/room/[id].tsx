@@ -30,6 +30,11 @@ const Room: React.FC = () => {
     },
   });
 
+  const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
+  const room = roomQuery.data;
+  const boardQuery = api.room.getBoard.useQuery();
+  const board = boardQuery.data;
+
   useEffect(() => {
     if (id) {
       const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -41,15 +46,11 @@ const Room: React.FC = () => {
   }, [id, ctx.room]);
 
   useEffect(() => {
-    if (idx >= 25 && sessionData?.user.board?.score === -1) {
+    if (idx === 25 && board?.score === -1) {
       scoreBoard.mutate();
+      setIdx(26);
     }
-  }, [idx, scoreBoard, sessionData]);
-
-  const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
-  const room = roomQuery.data;
-  const boardQuery = api.room.getBoard.useQuery();
-  const board = boardQuery.data;
+  }, [idx, scoreBoard, setIdx, board]);
 
   useEffect(() => {
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
