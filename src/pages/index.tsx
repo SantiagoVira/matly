@@ -45,15 +45,25 @@ const Home: NextPage = () => {
         Let&apos;s <span className="text-highlight">PLAY</span>!
       </h1>
       {sessionData?.user.roomId ? (
-        <Button
-          className="text-rose-600"
-          onClick={async () => {
-            await leaveMutation.mutateAsync();
-            document.dispatchEvent(new Event("visibilitychange"));
-          }}
-        >
-          Leave Current Room
-        </Button>
+        <div className="flex flex-col items-center justify-center gap-4">
+          <Button
+            className="text-highlight"
+            onClick={() =>
+              router.push(`/room/${sessionData?.user?.roomId ?? ""}`)
+            }
+          >
+            Go to Current Room
+          </Button>
+          <Button
+            className="text-rose-600"
+            onClick={async () => {
+              await leaveMutation.mutateAsync();
+              document.dispatchEvent(new Event("visibilitychange"));
+            }}
+          >
+            Leave Current Room
+          </Button>
+        </div>
       ) : (
         <>
           <Button onClick={() => createMutation.mutateAsync()} className="mb-4">
