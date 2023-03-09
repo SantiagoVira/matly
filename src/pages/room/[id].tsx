@@ -37,6 +37,7 @@ const Room: React.FC = () => {
   const scoreBoard = api.board.score.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
+      document.dispatchEvent(new Event("visibilitychange"));
     },
   });
 
