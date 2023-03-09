@@ -1,5 +1,5 @@
-import { inferRouterOutputs } from "@trpc/server";
-import { RoomRouter } from "~/server/api/routers/room";
+import type { inferRouterOutputs } from "@trpc/server";
+import type { RoomRouter } from "~/server/api/routers/room";
 
 const Leaderboard: React.FC<{
   room: inferRouterOutputs<RoomRouter>["findUnique"];

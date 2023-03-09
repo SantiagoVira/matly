@@ -30,7 +30,7 @@ const Room: React.FC = () => {
   const endGame = api.game.end.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
-      router.push("/");
+      await router.push("/");
     },
   });
   const scoreBoard = api.board.score.useMutation({
@@ -55,7 +55,7 @@ const Room: React.FC = () => {
       channel.unbind_all();
       channel.bind("invalidate", () => ctx.invalidate());
     }
-  }, [id, ctx.room]);
+  }, [id, ctx]);
 
   useEffect(() => {
     // Finalize board scoring
