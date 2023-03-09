@@ -51,9 +51,14 @@ const Room: React.FC = () => {
       const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
       });
-      channel.subscribe(id);
-      channel.unbind_all();
-      channel.bind("invalidate", () => ctx.invalidate());
+      console.log(channel.connection.state);
+      if (channel.connection.state !== "connected") {
+        console.log("Joining");
+        channel.unsubscribe(id);
+        channel.unbind_all();
+        channel.subscribe(id);
+        channel.bind("invalidate", () => ctx.invalidate());
+      }
     }
   }, [id, ctx]);
 
