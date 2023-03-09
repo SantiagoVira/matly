@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { invalidateRoom } from "~/pages/api/pusher";
+import { createId } from "@paralleldrive/cuid2";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -36,12 +37,23 @@ export const gameRouter = createTRPCRouter({
       await ctx.prisma.$transaction([
         ctx.prisma.room.update({
           where: { id: input.id },
-          data: { playing: true },
+          data: { playing: true, seed: createId() },
         }),
         ...makeBoards,
       ]);
 
       await invalidateRoom(input.id, ctx.session.user);
+    }),
+
+  reset: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const end = await ctx.prisma.room.update({
+        where: { id: input.id },
+        data: { playing: false },
+      });
+      await invalidateRoom(input.id, ctx.session.user);
+      return end;
     }),
 
   end: protectedProcedure

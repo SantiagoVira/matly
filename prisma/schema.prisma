@@ -98,4 +98,5 @@ model Room{
   id          String @id @default(cuid())
   members     User[]
   playing     Boolean @default(false)
+  seed        String  @default(cuid())
 }

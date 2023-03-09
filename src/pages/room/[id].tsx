@@ -34,6 +34,11 @@ const Room: React.FC = () => {
       await router.push("/");
     },
   });
+  const resetGame = api.game.reset.useMutation({
+    onSuccess: async () => {
+      await ctx.invalidate();
+    },
+  });
   const scoreBoard = api.board.score.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
@@ -85,7 +90,9 @@ const Room: React.FC = () => {
     .fill(0)
     .map(
       (_, i) =>
-        Math.floor(sr.default((id ?? "helloworld") + i.toString())() * 10) + 1
+        Math.floor(
+          sr.default((room?.seed ?? "helloworld") + i.toString())() * 10
+        ) + 1
     );
 
   if (
@@ -106,18 +113,30 @@ const Room: React.FC = () => {
           Room <span className="text-highlight">{id?.toUpperCase()}</span>
         </h1>
         {room?.members[0]?.id === sessionData?.user.id && (
-          <Button
-            onClick={async () => {
-              if (room.playing) await endGame.mutateAsync({ id: id ?? "" });
-              else await startGame.mutateAsync({ id: id ?? "" });
-            }}
-            className={cn(
-              "font-medium",
-              room.playing ? "text-rose-600" : "text-highlight"
+          <div className="flex items-center gap-4">
+            {room.playing && (
+              <Button
+                onClick={async () => {
+                  await resetGame.mutateAsync({ id: id ?? "" });
+                }}
+                className="font-medium text-highlight"
+              >
+                Reset Game
+              </Button>
             )}
-          >
-            {room.playing ? "End " : "Start "}Game
-          </Button>
+            <Button
+              onClick={async () => {
+                if (room.playing) await endGame.mutateAsync({ id: id ?? "" });
+                else await startGame.mutateAsync({ id: id ?? "" });
+              }}
+              className={cn(
+                "font-medium",
+                room.playing ? "text-rose-600" : "text-highlight"
+              )}
+            >
+              {room.playing ? "End " : "Start "}Game
+            </Button>
+          </div>
         )}
       </div>
 
