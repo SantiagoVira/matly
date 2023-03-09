@@ -11,7 +11,6 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const ctx = api.useContext();
   const { data: sessionData } = useSession();
 
   const createMutation = api.room.create.useMutation({
@@ -22,8 +21,8 @@ const Home: NextPage = () => {
   });
   const joinMutation = api.room.join.useMutation({
     onSuccess: async (e) => {
-      document.dispatchEvent(new Event("visibilitychange"));
-      await ctx.room.invalidate();
+      // document.dispatchEvent(new Event("visibilitychange"));
+      // await ctx.room.invalidate();
       await router.push(`/room/${e[0].id}`);
     },
   });

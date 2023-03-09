@@ -1,15 +1,26 @@
 import { randomBytes } from "crypto";
 import { z } from "zod";
+import { invalidateRoom } from "~/pages/api/pusher";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const roomRouter = createTRPCRouter({
-  findUnique: protectedProcedure
+  findUnique: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
+      if (!ctx.session) return null;
       return await ctx.prisma.room.findUnique({
         where: { id: input.id },
-        include: { members: { orderBy: { joinedRoomOn: "asc" } } },
+        include: {
+          members: {
+            orderBy: { joinedRoomOn: "asc" },
+            include: { board: true },
+          },
+        },
       });
     }),
 
@@ -64,6 +75,8 @@ export const roomRouter = createTRPCRouter({
         }
       }
 
+      await invalidateRoom(input.id);
+
       return await ctx.prisma.$transaction([
         ctx.prisma.room.update({
           where: {
@@ -112,7 +125,8 @@ export const roomRouter = createTRPCRouter({
     });
   }),
 
-  getBoard: protectedProcedure.query(async ({ ctx }) => {
+  getBoard: publicProcedure.query(async ({ ctx }) => {
+    if (!ctx.session) return null;
     return await ctx.prisma.board.findUnique({
       where: { userId: ctx.session.user.id },
       include: { tiles: true },
@@ -156,10 +170,17 @@ export const roomRouter = createTRPCRouter({
       }
     }
 
-    return await ctx.prisma.user.update({
-      where: { id: ctx.session.user.id },
+    const updateScore = await ctx.prisma.board.update({
+      where: { userId: ctx.session.user.id },
       data: { score: score },
     });
+
+    if (board) {
+      await invalidateRoom(board?.roomId);
+      console.log("\n\n\nFINITO\n\n\n");
+    }
+
+    return updateScore;
   }),
 
   startGame: protectedProcedure
@@ -174,7 +195,6 @@ export const roomRouter = createTRPCRouter({
           ctx.prisma.user.update({
             where: { id: user?.id ?? "" },
             data: {
-              score: -1,
               board: {
                 disconnect: true,
                 create: {
@@ -199,6 +219,8 @@ export const roomRouter = createTRPCRouter({
         }),
         ...makeBoards,
       ]);
+
+      await invalidateRoom(input.id);
     }),
 
   placeNumber: protectedProcedure

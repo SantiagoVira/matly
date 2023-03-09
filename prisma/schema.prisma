@@ -60,7 +60,6 @@ model User {
     roomId        String?
     joinedRoomOn  DateTime?
     board         Board?
-    score         Int @default(-1)
 
     @@index([roomId])
 }
@@ -76,6 +75,7 @@ model VerificationToken {
 model Board{
   id        String @id @default(cuid())
   tiles     Tile[] 
+  score         Int @default(-1)
   
   user      User? @relation(fields: [userId], references: [id])
   userId    String? @unique

@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
         session.user.board = user.board;
         session.user.roomId = user.roomId;
         session.user.room = user.room;
-        session.user.score = user.score;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;

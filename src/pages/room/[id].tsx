@@ -8,23 +8,52 @@ import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
 import { cn } from "~/utils/cn";
 import * as sr from "seedrandom";
+import Pusher from "pusher-js";
+import { env } from "~/env.mjs";
 
 const Room: React.FC = () => {
   const router = useRouter();
-  const { data: sessionData, status } = useSession();
-  const id = router.query.id?.toString();
-  const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
-  const room = roomQuery.data;
   const ctx = api.useContext();
-  const boardQuery = api.room.getBoard.useQuery();
-  const board = boardQuery.data;
+  const { data: sessionData, status } = useSession();
+
+  const [idx, setIdx] = useState(0);
+  const id = router.query.id?.toString();
 
   const startGame = api.room.startGame.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
     },
   });
-  const scoreBoard = api.room.scoreBoard.useMutation();
+  const scoreBoard = api.room.scoreBoard.useMutation({
+    onSuccess: async () => {
+      await ctx.invalidate();
+    },
+  });
+
+  useEffect(() => {
+    if (id) {
+      const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
+        cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
+      });
+      channel.subscribe(id);
+      channel.bind("invalidate", () => ctx.room.invalidate());
+    }
+  }, [id, ctx.room]);
+
+  useEffect(() => {
+    if (idx >= 25 && sessionData?.user.board?.score === -1) {
+      scoreBoard.mutate();
+    }
+  }, [idx, scoreBoard, sessionData]);
+
+  const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
+  const room = roomQuery.data;
+  const boardQuery = api.room.getBoard.useQuery();
+  const board = boardQuery.data;
+
+  useEffect(() => {
+    setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
+  }, [board]);
 
   const nums = new Array(25)
     .fill(0)
@@ -32,20 +61,6 @@ const Room: React.FC = () => {
       (_, i) =>
         Math.floor(sr.default((id ?? "helloworld") + i.toString())() * 10) + 1
     );
-  const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    if (idx >= 25 && sessionData?.user.score === -1) {
-      console.log("called");
-      scoreBoard.mutate();
-    }
-
-    console.log("hey", idx, sessionData?.user.score);
-  }, [idx, scoreBoard, sessionData]);
-
-  useEffect(() => {
-    setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
-  }, [board]);
 
   if (
     (status === "authenticated" &&
@@ -113,12 +128,18 @@ const Room: React.FC = () => {
               <div className="flex min-h-full w-full flex-1 flex-col items-start justify-start">
                 <ol className="ml-4 list-decimal">
                   {room.members
-                    .filter((user) => user.score >= 0)
-                    .sort((a, b) => b.score - a.score)
+                    .filter(
+                      (user) => user.board?.score && user.board?.score >= 0
+                    )
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    .sort((a, b) => b.board!.score - a.board!.score)
                     .map((user, i) => (
                       <li key={i}>
                         {user.name} -{" "}
-                        <span className="text-highlight">{user.score}</span>
+                        <span className="text-highlight">
+                          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                          {user.board!.score}
+                        </span>
                       </li>
                     ))}
                 </ol>

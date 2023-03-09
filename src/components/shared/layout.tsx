@@ -3,6 +3,7 @@ import Navbar from "./navbar";
 import Footer from "./footer";
 import { cn } from "~/utils/cn";
 import { useSession } from "next-auth/react";
+import { LoadingAnim } from "../loading";
 
 const Layout: React.FC<
   React.PropsWithChildren<{
@@ -24,7 +25,7 @@ const Layout: React.FC<
         )}
       >
         {status === "loading" || loading ? (
-          <div className="h-10 w-10 animate-pulse rounded-full bg-black/30" />
+          <LoadingAnim />
         ) : status === "authenticated" ? (
           <>{children}</>
         ) : (
