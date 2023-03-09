@@ -10,6 +10,9 @@ import { cn } from "~/utils/cn";
 import * as sr from "seedrandom";
 import Pusher from "pusher-js";
 import { env } from "~/env.mjs";
+import Leaderboard from "~/components/room/leaderboard";
+import MemberList from "~/components/room/member-list";
+import RoomNotFound from "~/components/room/room-not-found";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -36,6 +39,7 @@ const Room: React.FC = () => {
   const board = boardQuery.data;
 
   useEffect(() => {
+    // Connect to pusher
     if (id) {
       const channel = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -46,15 +50,15 @@ const Room: React.FC = () => {
   }, [id, ctx.room]);
 
   useEffect(() => {
+    // Finalize board scoring
     if (idx === 25 && board?.score === -1) {
       scoreBoard.mutate();
       setIdx(26);
     }
-  }, [idx, scoreBoard, setIdx, board]);
 
-  useEffect(() => {
+    // Pick up previous progress
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
-  }, [board]);
+  }, [idx, scoreBoard, setIdx, board]);
 
   const nums = new Array(25)
     .fill(0)
@@ -69,16 +73,7 @@ const Room: React.FC = () => {
       !room?.members.map((user) => user.id).includes(sessionData?.user.id)) ||
     !room
   )
-    return (
-      <Layout>
-        <div className="flex h-full w-full flex-col items-center justify-center">
-          <h1>Room not found!</h1>
-          <p>
-            Make sure the code is correct and that you have joined this class.
-          </p>
-        </div>
-      </Layout>
-    );
+    return <RoomNotFound />;
 
   return (
     <Layout
@@ -112,7 +107,7 @@ const Room: React.FC = () => {
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex w-full">
             <h3 className="flex-[2] text-center">
-              Next Number: <span className="text-highlight">{nums[idx]}</span>
+              Number: <span className="text-highlight">{nums[idx]}</span>
             </h3>
             {idx >= 25 && <h4 className="flex-1 text-left">Leaderboard</h4>}
           </div>
@@ -125,41 +120,11 @@ const Room: React.FC = () => {
                 stepNext={() => setIdx((i) => i + 1)}
               />
             </div>
-            {idx >= 25 && (
-              <div className="flex min-h-full w-full flex-1 flex-col items-start justify-start">
-                <ol className="ml-4 list-decimal">
-                  {room.members
-                    .filter(
-                      (user) => user.board?.score && user.board?.score >= 0
-                    )
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    .sort((a, b) => b.board!.score - a.board!.score)
-                    .map((user, i) => (
-                      <li key={i}>
-                        {user.name} -{" "}
-                        <span className="text-highlight">
-                          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-                          {user.board!.score}
-                        </span>
-                      </li>
-                    ))}
-                </ol>
-              </div>
-            )}
+            {idx >= 25 && <Leaderboard room={room} />}
           </div>
         </div>
       ) : (
-        <>
-          <div className="flex w-full items-center gap-2 px-10">
-            <h2>Members</h2>{" "}
-            <h2 className="font-extralight">- {room?.members.length}</h2>
-          </div>
-          {room?.members.map((user, i) => (
-            <p className="w-full px-14 text-left" key={i}>
-              {user.name}
-            </p>
-          ))}
-        </>
+        <MemberList room={room} />
       )}
     </Layout>
   );

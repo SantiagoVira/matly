@@ -127,3 +127,5 @@ export const roomRouter = createTRPCRouter({
     });
   }),
 });
+
+export type RoomRouter = typeof roomRouter;

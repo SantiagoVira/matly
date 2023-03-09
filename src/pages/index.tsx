@@ -15,14 +15,11 @@ const Home: NextPage = () => {
 
   const createMutation = api.room.create.useMutation({
     onSuccess: async (e) => {
-      document.dispatchEvent(new Event("visibilitychange"));
       await router.push(`/room/${e[0].id}`);
     },
   });
   const joinMutation = api.room.join.useMutation({
     onSuccess: async (e) => {
-      // document.dispatchEvent(new Event("visibilitychange"));
-      // await ctx.room.invalidate();
       await router.push(`/room/${e[0].id}`);
     },
   });
