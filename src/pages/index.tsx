@@ -11,6 +11,7 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const ctx = api.useContext();
   const { data: sessionData } = useSession();
 
   const createMutation = api.room.create.useMutation({
@@ -20,10 +21,17 @@ const Home: NextPage = () => {
   });
   const joinMutation = api.room.join.useMutation({
     onSuccess: async (e) => {
+      await ctx.invalidate();
+      document.dispatchEvent(new Event("visibilitychange"));
       await router.push(`/room/${e[0].id}`);
     },
   });
-  const leaveMutation = api.room.leave.useMutation();
+  const leaveMutation = api.room.leave.useMutation({
+    onSuccess: async () => {
+      await ctx.invalidate();
+      document.dispatchEvent(new Event("visibilitychange"));
+    },
+  });
 
   const [joinCode, setJoinCode] = useState("");
   const [isError, setIsError] = useState(false);
