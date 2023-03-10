@@ -36,14 +36,14 @@ const HowTo: React.FC = () => {
         the person with the highest score wins
       </p>
 
-      <div className="relative mx-auto mt-4 h-[12rem] w-[12rem] md:h-[30rem] md:w-[30rem]">
+      <div className="relative mx-auto mt-4 h-[20rem] w-[20rem] md:h-[30rem] md:w-[30rem]">
         {/* prettier-ignore */ }
-        <div className="absolute left-0 top-0 grid h-[12rem] w-[12rem] md:h-[30rem] md:w-[30rem] grid-cols-5 grid-rows-5">
+        <div className="absolute left-0 top-0 grid h-[20rem] w-[20rem] md:h-[30rem] md:w-[30rem] grid-cols-5 grid-rows-5">
           {sampleColors.map((c, i) => (
             <div key={i} className={c} />
           ))}
         </div>
-        <div className="absolute left-0 top-0 grid h-[12rem] w-[12rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
+        <div className="absolute left-0 top-0 grid h-[20rem] w-[20rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
           {sample.map((t, i) => (
             <Tile
               key={i}

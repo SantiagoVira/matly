@@ -13,7 +13,7 @@ const Board: React.FC<{
   stepNext: () => void;
 }> = ({ nums, idx, board, stepNext }) => {
   return (
-    <div className="grid h-[30rem] w-[30rem] grid-cols-5 grid-rows-5">
+    <div className="grid h-[20rem] w-[20rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
       {board?.tiles.map((t, i) => (
         <Tile
           key={i}

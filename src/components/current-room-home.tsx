@@ -33,6 +33,13 @@ const CurrentRoomHome: React.FC = () => {
       >
         Leave Current Room
       </Button>
+      <p>
+        Check out how to play{" "}
+        <a className="text-hightlight underline" href="/how-to">
+          here
+        </a>
+        !
+      </p>
     </div>
   );
 };

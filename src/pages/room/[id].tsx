@@ -14,12 +14,14 @@ import Leaderboard from "~/components/room/leaderboard";
 import MemberList from "~/components/room/member-list";
 import RoomNotFound from "~/components/room/room-not-found";
 import Loading from "~/components/loading";
+import useWindowSize from "~/utils/useWindowSize";
 
 const Room: React.FC = () => {
   const router = useRouter();
   const pusher = useRef<Pusher>();
   const ctx = api.useContext();
   const { data: sessionData, status } = useSession();
+  const { isMobile } = useWindowSize();
 
   const [idx, setIdx] = useState(0);
   const id = router.query.id?.toString();
@@ -120,7 +122,8 @@ const Room: React.FC = () => {
     >
       <div className="flex w-full items-center justify-between px-8 pt-4">
         <h1 className=" text-left">
-          Room <span className="text-highlight">{id?.toUpperCase()}</span>
+          {isMobile ? "" : "Room "}
+          <span className="text-highlight">{id?.toUpperCase()}</span>
         </h1>
         {room?.members[0]?.id === sessionData?.user.id && (
           <div className="flex items-center gap-4">
@@ -131,7 +134,7 @@ const Room: React.FC = () => {
                 }}
                 className="font-medium text-highlight"
               >
-                Reset Game
+                Reset{isMobile ? "" : " Game"}
               </Button>
             )}
             <Button
@@ -144,7 +147,8 @@ const Room: React.FC = () => {
                 room.playing ? "text-rose-600" : "text-highlight"
               )}
             >
-              {room.playing ? "End " : "Start "}Game
+              {room.playing ? "End" : "Start"}
+              {isMobile ? "" : " Game"}
             </Button>
           </div>
         )}
@@ -154,15 +158,12 @@ const Room: React.FC = () => {
         <hr className="w-full border-[#9e9e9e] " />
       </div>
       {room.playing ? (
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex w-full">
-            <h3 className="flex-[2] text-center">
+        <div className="flex w-full flex-col items-center gap-6 md:flex-row md:items-start md:gap-0">
+          <div className="flex flex-[2] flex-col items-center justify-center">
+            <h3 className=" text-center">
               Number: <span className="text-highlight">{nums[idx]}</span>
             </h3>
-            {idx >= 25 && <h4 className="flex-1 text-left">Leaderboard</h4>}
-          </div>
-          <div className="flex w-full">
-            <div className="flex flex-[2] flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
               <Board
                 nums={nums}
                 idx={idx}
@@ -172,8 +173,13 @@ const Room: React.FC = () => {
                 }}
               />
             </div>
-            {idx >= 25 && <Leaderboard room={room} />}
           </div>
+          {idx >= 25 && (
+            <div className="flex flex-1 flex-col items-start justify-start">
+              <h4 className="flex-1 text-left">Leaderboard</h4>{" "}
+              <Leaderboard room={room} />
+            </div>
+          )}
         </div>
       ) : (
         <MemberList room={room} />

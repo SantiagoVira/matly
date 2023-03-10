@@ -72,6 +72,13 @@ const NoRoomHome: React.FC = () => {
 
         {isError && <p className="text-sm text-rose-600">Room not found</p>}
       </div>
+      <p className="mt-4">
+        Check out how to play{" "}
+        <a className="text-hightlight underline" href="/how-to">
+          here
+        </a>
+        !
+      </p>
     </>
   );
 };
