@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import clsx from "clsx";
 import { Input } from "./ui/input";
 import { useState } from "react";
+import Link from "next/link";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
@@ -74,9 +75,9 @@ const NoRoomHome: React.FC = () => {
       </div>
       <p className="mt-4">
         Check out how to play{" "}
-        <a className="text-hightlight underline" href="/how-to">
+        <Link className="text-hightlight underline" href="/how-to">
           here
-        </a>
+        </Link>
         !
       </p>
     </>

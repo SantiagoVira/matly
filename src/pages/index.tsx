@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import CurrentRoomHome from "~/components/current-room-home";
 import NoRoomHome from "~/components/no-room-home";
 import Layout from "~/components/shared/layout";
@@ -18,19 +19,20 @@ const Home: NextPage = () => {
       {status !== "authenticated" ? (
         <>
           <h2 className="text-center">
-            <a
+            <Link
               className="underline hover:cursor-pointer"
+              href="/"
               onClick={() => signIn("google")}
             >
               Sign in
-            </a>{" "}
+            </Link>{" "}
             to start playing!
           </h2>
           <p>
             And check out how to play{" "}
-            <a className="text-hightlight underline" href="/how-to">
+            <Link className="text-hightlight underline" href="/how-to">
               here
-            </a>
+            </Link>
             !
           </p>
         </>

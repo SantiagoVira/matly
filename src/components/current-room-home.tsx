@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Button from "./ui/button";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import Link from "next/link";
 
 const CurrentRoomHome: React.FC = () => {
   const router = useRouter();
@@ -35,9 +36,9 @@ const CurrentRoomHome: React.FC = () => {
       </Button>
       <p>
         Check out how to play{" "}
-        <a className="text-hightlight underline" href="/how-to">
+        <Link className="text-hightlight underline" href="/how-to">
           here
-        </a>
+        </Link>
         !
       </p>
     </div>

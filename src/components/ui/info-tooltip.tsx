@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsArrowUpRight } from "react-icons/bs";
 
@@ -19,13 +20,13 @@ const InfoTooltip: React.FC<
         {children}
         {learnMore && (
           <div className="mt-2 flex w-full items-center justify-end">
-            <a
+            <Link
               className="flex items-center gap-2 border-b-[1px]"
               href={learnMore}
             >
               Learn more
               <BsArrowUpRight />
-            </a>
+            </Link>
           </div>
         )}
       </span>
