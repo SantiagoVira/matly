@@ -13,6 +13,7 @@ import { env } from "~/env.mjs";
 import Leaderboard from "~/components/room/leaderboard";
 import MemberList from "~/components/room/member-list";
 import RoomNotFound from "~/components/room/room-not-found";
+import Loading from "~/components/loading";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -30,8 +31,9 @@ const Room: React.FC = () => {
   });
   const endGame = api.game.end.useMutation({
     onSuccess: async () => {
-      await ctx.invalidate();
       await router.push("/");
+      await ctx.invalidate();
+      document.dispatchEvent(new Event("visibilitychange"));
     },
   });
   const resetGame = api.game.reset.useMutation({
@@ -100,6 +102,8 @@ const Room: React.FC = () => {
           sr.default((room?.seed ?? "helloworld") + i.toString())() * 10
         ) + 1
     );
+
+  if (roomQuery.status === "loading") return <Loading />;
 
   if (
     (status === "authenticated" &&

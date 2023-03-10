@@ -18,9 +18,9 @@ const NoRoomHome: React.FC = () => {
 
   const createMutation = api.room.create.useMutation({
     onSuccess: async (e) => {
-      await router.push(`/room/${e[0].id}`);
       await ctx.invalidate();
       document.dispatchEvent(new Event("visibilitychange"));
+      await router.push(`/room/${e[0].id}`);
     },
   });
   const joinMutation = api.room.join.useMutation({
