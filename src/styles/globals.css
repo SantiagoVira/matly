@@ -15,8 +15,7 @@ html {
 }
 
 h1 {
-  font-size: 3rem;
-  font-weight: 800;
+  @apply text-5xl font-bold md:text-6xl;
 }
 h2 {
   font-size: 2.5rem;
@@ -41,5 +40,4 @@ h6 {
 
 p {
   font-size: 1.125rem;
-  text-align: center;
 }

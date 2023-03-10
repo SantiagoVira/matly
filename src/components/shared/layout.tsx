@@ -30,7 +30,7 @@ const Layout: React.FC<
           <>{children}</>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center">
-            <h1>To begin, sign in!</h1>
+            <h2 className="mt-8">To begin, sign in!</h2>
           </div>
         )}
       </div>
