@@ -1,6 +1,5 @@
 import Layout from "~/components/shared/layout";
 import Tile from "~/components/tile";
-import { cn } from "~/utils/cn";
 
 // prettier-ignore
 const sample = [

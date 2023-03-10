@@ -10,8 +10,9 @@ const Layout: React.FC<
     title?: string;
     className?: string;
     loading?: boolean;
+    requireAuth?: boolean;
   }>
-> = ({ title, className, loading, children }) => {
+> = ({ title, className, loading, requireAuth = true, children }) => {
   const { status } = useSession();
 
   return (
@@ -26,7 +27,7 @@ const Layout: React.FC<
       >
         {status === "loading" || loading ? (
           <LoadingAnim />
-        ) : status === "authenticated" ? (
+        ) : status === "authenticated" || !requireAuth ? (
           <>{children}</>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center">
