@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
-    <div className="mt-6 flex h-[10rem] w-screen items-center justify-between bg-bg-200 px-20 shadow">
+    <div className="mt-4 flex h-32 w-screen items-center justify-between bg-bg-200 px-10 shadow">
       <div className="flex items-center gap-4">
         <Image src="/logo.svg" alt="" width={35} height={10} />
         <h1 className="text-[2rem] tracking-tight text-text-100">Matly</h1>

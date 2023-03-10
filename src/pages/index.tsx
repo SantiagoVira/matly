@@ -44,7 +44,7 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <h1 className="my-10 text-7xl">
-        Let&apos;s <span className="text-highlight">PLAY</span>!
+        Let&apos;s <span className="font-extrabold text-highlight">PLAY</span>!
       </h1>
       {sessionData?.user.roomId ? (
         <div className="flex flex-col items-center justify-center gap-4">
