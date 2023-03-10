@@ -14,6 +14,11 @@ html {
   background-color: var(--bg);
 }
 
+body {
+  position: absolute;
+  width: 100vw;
+}
+
 h1 {
   @apply text-5xl font-bold md:text-6xl;
 }

@@ -20,10 +20,10 @@ const sampleColors = [
 const HowTo: React.FC = () => {
   return (
     <Layout title="How To Play" requireAuth={false}>
-      <h1 className="mt-4">
+      <h1 className="mt-4 text-4xl md:text-5xl">
         How To Play <span className="text-highlight">Matly</span>
       </h1>
-      <p className="mt-10 min-w-[25rem] text-center sm:min-w-[35rem] md:w-1/2 ">
+      <p className="mx-10 mt-10 text-center sm:min-w-[35rem] md:mx-0 md:w-1/2 md:min-w-[25rem]">
         You start with a board. Each board consists of a grid of 25 tiles. A
         random number is chosen for every player, and everyone places it on
         their board. This repeats 25 times, until the grid is full. Every number
@@ -36,14 +36,14 @@ const HowTo: React.FC = () => {
         the person with the highest score wins
       </p>
 
-      <div className="relative mx-auto mt-4 h-[30rem] w-[30rem]">
+      <div className="relative mx-auto mt-4 h-[12rem] w-[12rem] md:h-[30rem] md:w-[30rem]">
         {/* prettier-ignore */ }
-        <div className="absolute left-0 top-0 grid h-[30rem] w-[30rem] grid-cols-5 grid-rows-5">
+        <div className="absolute left-0 top-0 grid h-[12rem] w-[12rem] md:h-[30rem] md:w-[30rem] grid-cols-5 grid-rows-5">
           {sampleColors.map((c, i) => (
             <div key={i} className={c} />
           ))}
         </div>
-        <div className="absolute left-0 top-0 grid h-[30rem] w-[30rem] grid-cols-5 grid-rows-5">
+        <div className="absolute left-0 top-0 grid h-[12rem] w-[12rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
           {sample.map((t, i) => (
             <Tile
               key={i}
@@ -56,8 +56,7 @@ const HowTo: React.FC = () => {
           ))}
         </div>
       </div>
-
-      <p className="mt-10 min-w-[25rem] text-center sm:min-w-[35rem] md:w-1/2 ">
+      <p className="mx-10 mt-10 text-center sm:min-w-[35rem] md:mx-0 md:w-1/2 md:min-w-[25rem]">
         In this case, the grouped numbers are highlighted. Going by rows, we see
         Row 1 has no matches. Row 2 has one match adding up to 2 points. Row 3
         has 2 groups, 1 adding to 8 and the other adding to 24. Row 4 has 1

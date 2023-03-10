@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
         <Image src="/logo.svg" alt="" width={35} height={10} />
         <h1 className="text-[2rem] tracking-tight text-text-100">Matly</h1>
       </div>
-      <div className="flex flex-col items-end gap-1 md:flex-1">
+      <div className="flex flex-col items-center gap-1 md:flex-1 md:items-end">
         <p>
           Made with love by{" "}
           <a
