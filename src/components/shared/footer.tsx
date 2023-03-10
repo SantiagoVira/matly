@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
-    <div className="mt-4 flex h-32 w-screen items-center justify-between bg-bg-200 px-10 shadow">
+    <div className="mt-4 flex h-44 w-screen flex-col items-center justify-center gap-3 bg-bg-200 px-10 shadow md:h-32 md:flex-row md:justify-between">
       <div className="flex items-center gap-4">
         <Image src="/logo.svg" alt="" width={35} height={10} />
         <h1 className="text-[2rem] tracking-tight text-text-100">Matly</h1>
       </div>
-      <div className="flex flex-1 flex-col items-end gap-1">
+      <div className="flex flex-col items-end gap-1 md:flex-1">
         <p>
           Made with love by{" "}
           <a

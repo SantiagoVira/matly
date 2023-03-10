@@ -19,7 +19,7 @@ const sampleColors = [
 
 const HowTo: React.FC = () => {
   return (
-    <Layout title="How To Play">
+    <Layout title="How To Play" requireAuth={false}>
       <h1 className="mt-4">
         How To Play <span className="text-highlight">Matly</span>
       </h1>

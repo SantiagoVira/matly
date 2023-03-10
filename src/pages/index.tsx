@@ -12,12 +12,12 @@ const Home: NextPage = () => {
       <h1 className="mt-10 text-7xl">
         Let&apos;s <span className="font-extrabold text-highlight">PLAY</span>!
       </h1>
-      <div className="w-full px-32">
+      <div className="w-full px-10 md:px-32">
         <hr className="my-6 w-full border-black/20" />
       </div>
       {status !== "authenticated" ? (
         <>
-          <h2>
+          <h2 className="text-center">
             <a
               className="underline hover:cursor-pointer"
               onClick={() => signIn("google")}
