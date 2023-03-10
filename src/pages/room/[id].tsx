@@ -114,8 +114,8 @@ const Room: React.FC = () => {
       title={`Room ${(id ?? "").toUpperCase()}`}
       loading={!room?.members.map((user) => user.id)}
     >
-      <div className="flex w-full items-center justify-between px-8">
-        <h1 className="text-left">
+      <div className="flex w-full items-center justify-between px-8 pt-4">
+        <h1 className=" text-left">
           Room <span className="text-highlight">{id?.toUpperCase()}</span>
         </h1>
         {room?.members[0]?.id === sessionData?.user.id && (
