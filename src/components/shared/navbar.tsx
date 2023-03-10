@@ -6,8 +6,9 @@ const Navbar: React.FC = () => {
   const { data: sessionData } = useSession();
   return (
     <div className="flex h-[50px] w-screen items-center justify-between bg-bg-200 px-20 shadow">
-      <Link href="/">
+      <Link href="/" className="flex gap-3">
         <Image src="/logo.svg" alt="" width={30} height={10} />
+        <h1 className="text-3xl tracking-tight text-text-100">Matly</h1>
       </Link>
       <button
         className="text-right text-highlight no-underline transition hover:-translate-y-0.5"

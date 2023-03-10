@@ -8,14 +8,16 @@ const Tile: React.FC<{
   nextVal: number;
   val?: number | undefined;
   stepNext: () => void;
-}> = ({ idx, nextVal, val = -1, stepNext }) => {
+  noHover?: boolean;
+}> = ({ idx, nextVal, val = -1, stepNext, noHover = false }) => {
   const [value, setValue] = useState(val);
   const placeNumber = api.board.placeNumber.useMutation();
 
   return (
     <div
       className={cn(
-        `-px-1 group flex h-full w-full items-center justify-center border border-black hover:bg-slate-50/80`,
+        `-px-1 group flex h-full w-full items-center justify-center border border-black`,
+        !noHover && "hover:bg-slate-50/80",
         idx < 5 && "border-t-2",
         idx > 19 && "border-b-2",
         (idx + 1) % 5 === 0 && "border-r-2",
