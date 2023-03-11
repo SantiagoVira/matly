@@ -13,7 +13,7 @@ const NoRoomHome: React.FC = () => {
   const ctx = api.useContext();
 
   const [joinCode, setJoinCode] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState("");
   const roomExists = api.room.findUnique.useQuery({
     id: joinCode,
   });
@@ -33,6 +33,19 @@ const NoRoomHome: React.FC = () => {
     },
   });
 
+  const onJoin = async () => {
+    await roomExists.refetch();
+    if (!roomExists.data) {
+      setError("Room not Found");
+      return;
+    }
+    if (roomExists.data.playing) {
+      setError("Room currently playing");
+      return;
+    }
+    await joinMutation.mutateAsync({ id: joinCode });
+  };
+
   return (
     <>
       <Button onClick={() => createMutation.mutateAsync()} className="mb-4">
@@ -43,36 +56,21 @@ const NoRoomHome: React.FC = () => {
           <Input
             className={clsx(
               "h-10 w-32 rounded-r-none",
-              isError && "border border-rose-600"
+              error && "border border-rose-600"
             )}
             onKeyDown={async (e) => {
               if (e.key === "Enter") {
-                await roomExists.refetch();
-                if (!roomExists.data) {
-                  setIsError(true);
-                  return;
-                }
-                await joinMutation.mutateAsync({ id: joinCode });
+                await onJoin();
               }
             }}
             onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
           />
-          <Button
-            className="h-10 w-36 rounded-l-none shadow"
-            onClick={async () => {
-              await roomExists.refetch();
-              if (!roomExists.data) {
-                setIsError(true);
-                return;
-              }
-              await joinMutation.mutateAsync({ id: joinCode });
-            }}
-          >
+          <Button className="h-10 w-36 rounded-l-none shadow" onClick={onJoin}>
             Join Room
           </Button>
         </div>
 
-        {isError && <p className="text-sm text-rose-600">Room not found</p>}
+        {error && <p className="text-sm text-rose-600">{error}</p>}
       </div>
       <LinkButton href="/local">Play Locally</LinkButton>
       <p className="mt-4">
