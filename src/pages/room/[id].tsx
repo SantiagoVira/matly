@@ -117,6 +117,7 @@ const Room: React.FC = () => {
         ) + 1
     );
 
+  console.log(nums[idx]);
   if (roomQuery.status === "loading" || !nums[idx]) return <Loading />;
 
   if (
@@ -181,7 +182,7 @@ const Room: React.FC = () => {
           <div className="flex flex-[2] flex-col items-center justify-center">
             <h3 className=" text-center">
               {idx >= 25 ? "Done!" : "Number: "}
-              <span className="text-highlight">{nums[idx]}</span>
+              <span className="text-highlight">{nums[idx ?? 0]}</span>
             </h3>
             <div className="flex flex-col items-center justify-center">
               <Board
