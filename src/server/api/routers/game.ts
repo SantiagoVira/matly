@@ -62,7 +62,7 @@ export const gameRouter = createTRPCRouter({
       const end = await ctx.prisma.room.delete({
         where: { id: input.id },
       });
-      await invalidateRoom(input.id, ctx.session.user);
+      await invalidateRoom(input.id, ctx.session.user, "/");
       return end;
     }),
 });

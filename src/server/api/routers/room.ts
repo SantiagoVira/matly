@@ -106,6 +106,7 @@ export const roomRouter = createTRPCRouter({
         include: { members: true },
       });
       if (oldRoom?.members.length && oldRoom?.members.length <= 1) {
+        await invalidateRoom(ctx.session.user.roomId, ctx.session.user, "/");
         await ctx.prisma.room.delete({
           where: { id: ctx.session.user.roomId },
         });

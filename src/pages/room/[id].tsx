@@ -15,6 +15,8 @@ import MemberList from "~/components/room/member-list";
 import RoomNotFound from "~/components/room/room-not-found";
 import Loading from "~/components/loading";
 import useWindowSize from "~/utils/useWindowSize";
+import SuperJSON from "superjson";
+import { User } from "@prisma/client";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -57,6 +59,8 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Connect to pusher
+    console.log("run thing", id, pusher.current);
+    setTimeout(() => console.log(pusher.current), 1000);
     if (id && !pusher.current) {
       pusher.current = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -69,19 +73,32 @@ const Room: React.FC = () => {
       pusher.current.unsubscribe(id);
       pusher.current.unbind_all();
       pusher.current.subscribe(id);
-      pusher.current.bind("invalidate", async () => {
+      pusher.current.bind("invalidate", async (d: { raw: string }) => {
+        console.log("Recieved invalidate message");
         await ctx.invalidate();
+        const data: {
+          userId: string;
+          redeemedAt: number;
+          user: User;
+          path?: string;
+        } = SuperJSON.parse(d.raw);
+        console.log(data);
+        if (data.path) {
+          await router.push(data.path);
+        }
 
         document.dispatchEvent(new Event("visibilitychange"));
       });
     }
 
     return () => {
+      console.log("Hello");
       if (pusher.current) {
         pusher.current.disconnect();
+        pusher.current = undefined;
       }
     };
-  }, [id, ctx]);
+  }, [id, ctx, router]);
 
   useEffect(() => {
     // Finalize board scoring
