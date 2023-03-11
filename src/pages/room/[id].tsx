@@ -117,7 +117,7 @@ const Room: React.FC = () => {
         ) + 1
     );
 
-  if (roomQuery.status === "loading") return <Loading />;
+  if (roomQuery.status === "loading" || !nums[idx]) return <Loading />;
 
   if (
     (status === "authenticated" &&
