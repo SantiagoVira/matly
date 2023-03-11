@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
 import * as sr from "seedrandom";

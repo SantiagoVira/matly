@@ -73,6 +73,12 @@ const NoRoomHome: React.FC = () => {
 
         {isError && <p className="text-sm text-rose-600">Room not found</p>}
       </div>
+      <Link
+        className="text-100 mt-4 h-fit rounded-lg bg-bg-300 px-3 py-[0.4rem] text-center shadow hover:bg-slate-300/40 active:bg-slate-300/90 disabled:opacity-50"
+        href="/local"
+      >
+        Play Locally
+      </Link>
       <p className="mt-4">
         Check out how to play{" "}
         <Link className="text-hightlight underline" href="/how-to">
