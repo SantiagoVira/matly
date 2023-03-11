@@ -117,7 +117,7 @@ const Room: React.FC = () => {
         ) + 1
     );
 
-  console.log(nums[idx]);
+  console.log(nums[idx], nums, idx);
   if (roomQuery.status === "loading" || !nums[idx]) return <Loading />;
 
   if (
