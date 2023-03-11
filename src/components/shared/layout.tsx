@@ -30,7 +30,7 @@ const Layout: React.FC<
         ) : status === "authenticated" || !requireAuth ? (
           <>{children}</>
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center">
+          <div className="flex h-full w-full flex-col items-center justify-center text-center">
             <h2 className="mt-8">To begin, sign in!</h2>
           </div>
         )}
