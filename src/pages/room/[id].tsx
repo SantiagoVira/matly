@@ -6,7 +6,6 @@ import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
 import { api } from "~/utils/api";
-import { cn } from "~/utils/cn";
 import * as sr from "seedrandom";
 import Pusher from "pusher-js";
 import { env } from "~/env.mjs";
@@ -150,18 +149,25 @@ const Room: React.FC = () => {
                 Reset{isMobile ? "" : " Game"}
               </Button>
             )}
+            {!room.playing && (
+              <Button
+                onClick={async () => {
+                  await startGame.mutateAsync({ id: id ?? "" });
+                }}
+                className="font-medium text-highlight"
+              >
+                Start
+                {isMobile ? "" : " Game"}
+              </Button>
+            )}
             <Button
               onClick={async () => {
-                if (room.playing) await endGame.mutateAsync({ id: id ?? "" });
-                else await startGame.mutateAsync({ id: id ?? "" });
+                await endGame.mutateAsync({ id: id ?? "" });
               }}
-              className={cn(
-                "font-medium",
-                room.playing ? "text-rose-600" : "text-highlight"
-              )}
+              className="font-medium text-rose-600"
             >
-              {room.playing ? "End" : "Start"}
-              {isMobile ? "" : " Game"}
+              Close
+              {isMobile ? "" : " Room"}
             </Button>
           </div>
         )}
