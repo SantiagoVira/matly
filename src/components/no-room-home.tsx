@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import Link from "next/link";
+import LinkButton from "./ui/link-button";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
@@ -73,12 +74,7 @@ const NoRoomHome: React.FC = () => {
 
         {isError && <p className="text-sm text-rose-600">Room not found</p>}
       </div>
-      <Link
-        className="text-100 mt-4 h-fit rounded-lg bg-bg-300 px-3 py-[0.4rem] text-center shadow hover:bg-slate-300/40 active:bg-slate-300/90 disabled:opacity-50"
-        href="/local"
-      >
-        Play Locally
-      </Link>
+      <LinkButton href="/local">Play Locally</LinkButton>
       <p className="mt-4">
         Check out how to play{" "}
         <Link className="text-hightlight underline" href="/how-to">

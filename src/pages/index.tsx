@@ -5,6 +5,7 @@ import Link from "next/link";
 import CurrentRoomHome from "~/components/current-room-home";
 import NoRoomHome from "~/components/no-room-home";
 import Layout from "~/components/shared/layout";
+import LinkButton from "~/components/ui/link-button";
 const Home: NextPage = () => {
   const { data: sessionData, status } = useSession();
 
@@ -18,7 +19,8 @@ const Home: NextPage = () => {
       </div>
       {status !== "authenticated" ? (
         <>
-          <h2 className="text-center">
+          <LinkButton href="/local">Play Locally</LinkButton>
+          <h2 className="my-3 w-3/4 text-center md:w-[28rem]">
             <Link
               className="underline hover:cursor-pointer"
               href="/"
@@ -26,8 +28,9 @@ const Home: NextPage = () => {
             >
               Sign in
             </Link>{" "}
-            to start playing!
+            to start playing with friends!
           </h2>
+
           <p>
             And check out how to play{" "}
             <Link className="text-hightlight underline" href="/how-to">
