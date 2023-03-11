@@ -16,7 +16,7 @@ import RoomNotFound from "~/components/room/room-not-found";
 import Loading from "~/components/loading";
 import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -59,8 +59,6 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Connect to pusher
-    console.log("run thing", id, pusher.current);
-    setTimeout(() => console.log(pusher.current), 1000);
     if (id && !pusher.current) {
       pusher.current = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -82,7 +80,6 @@ const Room: React.FC = () => {
           user: User;
           path?: string;
         } = SuperJSON.parse(d.raw);
-        console.log(data);
         if (data.path) {
           await router.push(data.path);
         }
@@ -92,7 +89,6 @@ const Room: React.FC = () => {
     }
 
     return () => {
-      console.log("Hello");
       if (pusher.current) {
         pusher.current.disconnect();
         pusher.current = undefined;
@@ -178,7 +174,8 @@ const Room: React.FC = () => {
         <div className="flex w-full flex-col items-center gap-6 md:flex-row md:items-start md:gap-0">
           <div className="flex flex-[2] flex-col items-center justify-center">
             <h3 className=" text-center">
-              Number: <span className="text-highlight">{nums[idx]}</span>
+              {idx >= 25 ? "Done!" : "Number: "}
+              <span className="text-highlight">{nums[idx]}</span>
             </h3>
             <div className="flex flex-col items-center justify-center">
               <Board

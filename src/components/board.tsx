@@ -1,11 +1,11 @@
-import { Board, type Tile as PrismaTile } from "@prisma/client";
+import type { Board as PrismaBoard, Tile as PrismaTile } from "@prisma/client";
 import Tile from "./tile";
 
 const Board: React.FC<{
   nums: number[];
   idx: number;
   board:
-    | (Board & {
+    | (PrismaBoard & {
         tiles: PrismaTile[];
       })
     | null
