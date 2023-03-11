@@ -18,7 +18,6 @@ export const gameRouter = createTRPCRouter({
             where: { id: user?.id ?? "" },
             data: {
               board: {
-                disconnect: true,
                 create: {
                   roomId: input.id,
                   tiles: {

@@ -55,7 +55,7 @@ export const roomRouter = createTRPCRouter({
       }),
       ctx.prisma.user.update({
         where: { id: ctx.session.user.id },
-        data: { joinedRoomOn: new Date() },
+        data: { joinedRoomOn: new Date(), board: { disconnect: true } },
       }),
     ]);
   }),
@@ -90,7 +90,7 @@ export const roomRouter = createTRPCRouter({
         }),
         ctx.prisma.user.update({
           where: { id: ctx.session.user.id },
-          data: { joinedRoomOn: new Date() },
+          data: { joinedRoomOn: new Date(), board: { disconnect: true } },
         }),
       ]);
 
