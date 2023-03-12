@@ -16,6 +16,7 @@ import Loading from "~/components/loading";
 import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
+import CloseRoomButton from "~/components/room/close-room-button";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -30,13 +31,6 @@ const Room: React.FC = () => {
   const startGame = api.game.start.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
-    },
-  });
-  const endGame = api.game.end.useMutation({
-    onSuccess: async () => {
-      await router.push("/");
-      await ctx.invalidate();
-      document.dispatchEvent(new Event("visibilitychange"));
     },
   });
   const resetGame = api.game.reset.useMutation({
@@ -156,15 +150,8 @@ const Room: React.FC = () => {
                 {isMobile ? "" : " Game"}
               </Button>
             )}
-            <Button
-              onClick={async () => {
-                await endGame.mutateAsync({ id: id ?? "" });
-              }}
-              className="font-medium text-rose-600"
-            >
-              Close
-              {isMobile ? "" : " Room"}
-            </Button>
+
+            <CloseRoomButton id={id} />
           </div>
         )}
       </div>
