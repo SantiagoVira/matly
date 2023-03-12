@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { cn } from "~/utils/cn";
@@ -11,6 +12,7 @@ const Tile: React.FC<{
   noHover?: boolean;
 }> = ({ idx, nextVal, val = -1, stepNext, noHover = false }) => {
   const [value, setValue] = useState(val);
+  const router = useRouter();
   const placeNumber = api.board.placeNumber.useMutation();
 
   return (
@@ -27,7 +29,11 @@ const Tile: React.FC<{
         if (value !== -1) return;
         setValue(nextVal);
         stepNext();
-        await placeNumber.mutateAsync({ value: nextVal, idx: idx });
+        await placeNumber.mutateAsync({
+          value: nextVal,
+          idx: idx,
+          daily: router.pathname.endsWith("daily"),
+        });
       }}
     >
       <p

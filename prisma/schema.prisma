@@ -59,7 +59,8 @@ model User {
     room          Room? @relation(fields: [roomId], references: [id], onDelete: SetNull)
     roomId        String?
     joinedRoomOn  DateTime?
-    board         Board?
+    board         Board? @relation("main")
+    dailyBoard    Board? @relation("daily")
 
     @@index([roomId])
 }
@@ -73,13 +74,15 @@ model VerificationToken {
 }
 
 model Board{
-  id        String @id @default(cuid())
-  tiles     Tile[] 
-  score         Int @default(-1)
+  id          String @id @default(cuid())
+  tiles       Tile[] 
+  score       Int @default(-1)
   
-  user      User? @relation(fields: [userId], references: [id])
-  userId    String? @unique
-  roomId    String
+  user        User? @relation("main", fields: [userId], references: [id])
+  userId      String? @unique
+  dailyUser   User? @relation("daily", fields: [dailyUserId], references: [id])
+  dailyUserId String @unique
+  roomId      String
 }
 
 model Tile{
