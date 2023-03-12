@@ -3,7 +3,7 @@ import { useToast } from "~/utils/use-toast";
 
 const ShareScore: React.FC<{ score: number | undefined }> = ({ score }) => {
   const { toast } = useToast();
-  return score ? (
+  return score && score > 0 ? (
     <p
       className="mb-2 text-highlight underline hover:cursor-pointer"
       onClick={async () => {
