@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Board from "~/components/board";
 import Layout from "~/components/shared/layout";
 import Button from "~/components/ui/button";
@@ -105,18 +105,21 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Pick up previous progress
-    console.log(board);
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
   }, [board]);
 
-  const nums = new Array(25)
-    .fill(0)
-    .map(
-      (_, i) =>
-        Math.floor(
-          sr.default((room?.seed ?? "helloworld") + i.toString())() * 10
-        ) + 1
-    );
+  const nums: number[] = useMemo(
+    () =>
+      new Array(25)
+        .fill(0)
+        .map(
+          (_, i) =>
+            Math.floor(
+              sr.default((room?.seed ?? "helloworld") + i.toString())() * 10
+            ) + 1
+        ),
+    [room?.seed]
+  );
 
   if (roomQuery.status === "loading") return <Loading />;
 
@@ -127,8 +130,6 @@ const Room: React.FC = () => {
     !room
   )
     return <RoomNotFound />;
-
-  console.log(nums);
 
   return (
     <Layout
