@@ -131,6 +131,31 @@ const Room: React.FC = () => {
               }}
             />
           </div>
+          {board?.score && (
+            <p
+              className="mt-2 text-highlight underline hover:cursor-pointer"
+              onClick={async () => {
+                if (navigator.share) {
+                  await navigator.share({
+                    title: "Daily Matly",
+                    text: `I scored ${
+                      board?.score ?? 0
+                    } on today's daily Matly. Can you beat me?`,
+                    url: "https://matly.vercel.app/daily",
+                  });
+                } else {
+                  await navigator.clipboard.writeText(
+                    `I scored ${
+                      board?.score ?? 0
+                    } on today's daily Matly. Can you beat me? https://matly.vercel.app/daily`
+                  );
+                  console.log("Text copied");
+                }
+              }}
+            >
+              Share my score
+            </p>
+          )}
         </div>
       </div>
     </Layout>
