@@ -12,7 +12,7 @@ const ShareScore: React.FC<{ score: number | undefined }> = ({ score }) => {
             title: "Daily Matly",
             text: `I scored ${
               score ?? 0
-            } on today's daily Matly. Can you beat me?`,
+            } on today's daily Matly. Can you beat me? https://matly.vercel.app/daily`,
             url: "https://matly.vercel.app/daily",
           });
         } else {
