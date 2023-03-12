@@ -73,6 +73,9 @@ const NoRoomHome: React.FC = () => {
         {error && <p className="text-sm text-rose-600">{error}</p>}
       </div>
       <LinkButton href="/local">Play Locally</LinkButton>
+      <LinkButton href="/daily" className="text-highlight">
+        Daily Game
+      </LinkButton>
       <p className="mt-4">
         Check out how to play{" "}
         <Link className="text-hightlight underline" href="/how-to">

@@ -7,7 +7,6 @@ import { api } from "~/utils/api";
 import * as sr from "seedrandom";
 import Pusher from "pusher-js";
 import { env } from "~/env.mjs";
-import Leaderboard from "~/components/room/leaderboard";
 import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
@@ -105,9 +104,16 @@ const Room: React.FC = () => {
       </div>
       <div className="flex w-full flex-col items-center gap-6 md:flex-row md:items-start md:gap-0">
         <div className="flex flex-[2] flex-col items-center justify-center">
-          <h3 className=" text-center">
-            {idx >= 25 ? "Done!" : "Number: "}
-            <span className="text-highlight">{nums[idx]}</span>
+          <h3 className="mb-2 text-center">
+            {idx >= 25 ? (
+              <>
+                Done! Score:{" "}
+                <span className="text-highlight">{board?.score}</span>
+              </>
+            ) : (
+              "Number: "
+            )}
+            <span className="text-highlight">{nums ? nums[idx] : 0}</span>
           </h3>
           <div className="flex flex-col items-center justify-center">
             <Board
@@ -126,12 +132,6 @@ const Room: React.FC = () => {
             />
           </div>
         </div>
-        {/* {idx >= 25 && (
-          <div className="flex flex-1 flex-col items-start justify-start">
-            <h4 className="flex-1 text-left">Leaderboard</h4>{" "}
-            <Leaderboard room={room} />
-          </div>
-        )} */}
       </div>
     </Layout>
   );
