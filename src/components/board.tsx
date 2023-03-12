@@ -1,5 +1,6 @@
 import type { Board as PrismaBoard, Tile as PrismaTile } from "@prisma/client";
 import Tile from "./tile";
+import { useEffect } from "react";
 
 const Board: React.FC<{
   nums: number[];
@@ -12,6 +13,9 @@ const Board: React.FC<{
     | undefined;
   stepNext: () => void;
 }> = ({ nums, idx, board, stepNext }) => {
+  useEffect(() => {
+    console.log(idx);
+  }, [idx]);
   return (
     <div className="grid h-[20rem] w-[20rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
       {board?.tiles.map((t, i) => (
