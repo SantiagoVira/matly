@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       </div>
       {status !== "authenticated" ? (
         <>
-          <LinkButton href="/local">Play Locally</LinkButton>
+          <LinkButton href="/local">Singleplayer</LinkButton>
           <h2 className="my-3 w-3/4 text-center md:w-[28rem]">
             <Link
               className="underline hover:cursor-pointer"
