@@ -105,6 +105,7 @@ const Room: React.FC = () => {
 
   useEffect(() => {
     // Pick up previous progress
+    console.log(board);
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
   }, [board]);
 
