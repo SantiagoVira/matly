@@ -108,8 +108,13 @@ const Room: React.FC = () => {
           <h3 className="mb-2 text-center">
             {idx >= 25 ? (
               <>
-                Done! Score:{" "}
-                <span className="text-highlight">{board?.score}</span>
+                Done!{" "}
+                {board?.score && board.score > 0 && (
+                  <>
+                    Score:{" "}
+                    <span className="text-highlight">{board?.score}</span>
+                  </>
+                )}
               </>
             ) : (
               "Number: "
@@ -127,7 +132,7 @@ const Room: React.FC = () => {
               }}
               checkWin={() => {
                 if (idx + 1 === 25 && board?.score === -1) {
-                  scoreBoard.mutate({});
+                  scoreBoard.mutate({ daily: true });
                   return 26;
                 }
               }}

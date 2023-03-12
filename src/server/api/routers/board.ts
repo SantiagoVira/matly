@@ -59,7 +59,7 @@ export const boardRouter = createTRPCRouter({
 
       if (board?.tiles.filter((t) => t.value === -1).length) return;
 
-      console.log("\n\n It has the things \n\n");
+      console.log("\n\n It has the things \n\n", board);
 
       if (board?.tiles) {
         for (let y = 0; y < 5; y++) {
