@@ -127,6 +127,8 @@ const Room: React.FC = () => {
   )
     return <RoomNotFound />;
 
+  console.log(nums);
+
   return (
     <Layout
       title={`Room ${(id ?? "").toUpperCase()}`}
