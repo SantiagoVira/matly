@@ -10,6 +10,7 @@ import { env } from "~/env.mjs";
 import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
+import ShareScore from "~/components/room/share-score";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -115,6 +116,7 @@ const Room: React.FC = () => {
             )}
             <span className="text-highlight">{nums ? nums[idx] : 0}</span>
           </h3>
+          <ShareScore score={board?.score} />
           <div className="flex flex-col items-center justify-center">
             <Board
               nums={nums}
@@ -131,31 +133,6 @@ const Room: React.FC = () => {
               }}
             />
           </div>
-          {board?.score && (
-            <p
-              className="mt-2 text-highlight underline hover:cursor-pointer"
-              onClick={async () => {
-                if (navigator.share) {
-                  await navigator.share({
-                    title: "Daily Matly",
-                    text: `I scored ${
-                      board?.score ?? 0
-                    } on today's daily Matly. Can you beat me?`,
-                    url: "https://matly.vercel.app/daily",
-                  });
-                } else {
-                  await navigator.clipboard.writeText(
-                    `I scored ${
-                      board?.score ?? 0
-                    } on today's daily Matly. Can you beat me? https://matly.vercel.app/daily`
-                  );
-                  console.log("Text copied");
-                }
-              }}
-            >
-              Share my score
-            </p>
-          )}
         </div>
       </div>
     </Layout>

@@ -17,6 +17,7 @@ import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
 import CloseRoomButton from "~/components/room/close-room-button";
+import { useToast } from "~/utils/use-toast";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const Room: React.FC = () => {
   const ctx = api.useContext();
   const { data: sessionData, status } = useSession();
   const { isMobile } = useWindowSize();
+  const { toast } = useToast();
 
   const [idx, setIdx] = useState(0);
   const id = router.query.id?.toString();
@@ -74,6 +76,10 @@ const Room: React.FC = () => {
           path?: string;
         } = SuperJSON.parse(d.raw);
         if (data.path) {
+          toast({
+            title: `Room ${id.toUpperCase()} closed`,
+            description: "Redirecting to home",
+          });
           await router.push(data.path);
         }
 
@@ -87,7 +93,7 @@ const Room: React.FC = () => {
         pusher.current = undefined;
       }
     };
-  }, [id, ctx, router]);
+  }, [id, ctx, router, toast]);
 
   useEffect(() => {
     // Pick up previous progress
