@@ -72,7 +72,7 @@ const Room: React.FC = () => {
       pusher.current.subscribe(id);
       pusher.current.bind("invalidate", async (d: { raw: string }) => {
         console.log("Recieved invalidate message");
-        await ctx.invalidate();
+        await ctx.room.invalidate();
         const data: {
           userId: string;
           redeemedAt: number;
