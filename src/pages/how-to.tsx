@@ -49,7 +49,8 @@ const HowTo: React.FC = () => {
               key={i}
               idx={i}
               nextVal={-1}
-              stepNext={() => console.log("not playable")}
+              stepNext={() => ({})}
+              checkWin={() => ({})}
               val={t}
               noHover
             />
