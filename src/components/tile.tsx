@@ -9,8 +9,9 @@ const Tile: React.FC<{
   nextVal: number;
   val?: number | undefined;
   stepNext: () => void;
+  checkWin: () => void;
   noHover?: boolean;
-}> = ({ idx, nextVal, val = -1, stepNext, noHover = false }) => {
+}> = ({ idx, nextVal, val = -1, stepNext, checkWin, noHover = false }) => {
   const [value, setValue] = useState(val);
   const router = useRouter();
   const placeNumber = api.board.placeNumber.useMutation();
@@ -27,13 +28,14 @@ const Tile: React.FC<{
       )}
       onClick={async () => {
         if (value !== -1) return;
-        setValue(nextVal);
         stepNext();
+        setValue(nextVal);
         await placeNumber.mutateAsync({
           value: nextVal,
           idx: idx,
           daily: router.pathname.endsWith("daily"),
         });
+        checkWin();
       }}
     >
       <p

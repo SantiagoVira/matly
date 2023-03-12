@@ -11,7 +11,9 @@ const Board: React.FC<{
     | null
     | undefined;
   stepNext: () => void;
-}> = ({ nums, idx, board, stepNext }) => {
+
+  checkWin: () => void;
+}> = ({ nums, idx, board, stepNext, checkWin }) => {
   return (
     <div className="grid h-[20rem] w-[20rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
       {board?.tiles.map((t, i) => (
@@ -20,6 +22,7 @@ const Board: React.FC<{
           idx={i}
           nextVal={nums[idx] ?? -1}
           stepNext={stepNext}
+          checkWin={checkWin}
           val={t.value > 0 ? t.value : -1}
         />
       ))}

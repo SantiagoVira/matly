@@ -96,14 +96,6 @@ const Room: React.FC = () => {
   }, [id, ctx, router]);
 
   useEffect(() => {
-    // Finalize board scoring
-    if (idx === 25 && board?.score === -1) {
-      scoreBoard.mutate();
-      setIdx(26);
-    }
-  }, [idx, scoreBoard, setIdx, board]);
-
-  useEffect(() => {
     // Pick up previous progress
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
   }, [board]);
@@ -194,6 +186,12 @@ const Room: React.FC = () => {
                 board={board}
                 stepNext={() => {
                   setIdx((i) => i + 1);
+                }}
+                checkWin={() => {
+                  if (idx + 1 === 25 && board?.score === -1) {
+                    scoreBoard.mutate({});
+                    return 26;
+                  }
                 }}
               />
             </div>

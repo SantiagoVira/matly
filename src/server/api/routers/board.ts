@@ -46,6 +46,7 @@ export const boardRouter = createTRPCRouter({
   score: protectedProcedure
     .input(z.object({ daily: z.boolean().default(false) }))
     .mutation(async ({ ctx, input }) => {
+      console.log("\n\n\n HELLOOOOOO \n\n\n");
       let score = 0;
       const board = await ctx.prisma.board.findUnique({
         where: input.daily
@@ -54,7 +55,11 @@ export const boardRouter = createTRPCRouter({
         include: { tiles: true },
       });
 
+      console.log(board);
+
       if (board?.tiles.filter((t) => t.value === -1).length) return;
+
+      console.log("\n\n It has the things \n\n");
 
       if (board?.tiles) {
         for (let y = 0; y < 5; y++) {
@@ -87,7 +92,9 @@ export const boardRouter = createTRPCRouter({
       }
 
       const updateScore = await ctx.prisma.board.update({
-        where: { userId: ctx.session.user.id },
+        where: input.daily
+          ? { dailyUserId: ctx.session.user.id }
+          : { userId: ctx.session.user.id },
         data: { score: score },
       });
 

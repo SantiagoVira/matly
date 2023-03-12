@@ -10,11 +10,17 @@ export const gameRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const membersQuery = await ctx.prisma.room.findUnique({
         where: { id: input.id },
-        select: { members: { orderBy: { joinedRoomOn: "asc" } } },
+        select: {
+          members: {
+            orderBy: { joinedRoomOn: "asc" },
+            include: { board: true },
+          },
+        },
       });
       const makeBoards =
-        membersQuery?.members.map((user) =>
-          ctx.prisma.user.update({
+        membersQuery?.members.map((user) => {
+          console.log(user);
+          return ctx.prisma.user.update({
             where: { id: user?.id ?? "" },
             data: {
               board: {
@@ -30,8 +36,8 @@ export const gameRouter = createTRPCRouter({
                 },
               },
             },
-          })
-        ) ?? [];
+          });
+        }) ?? [];
 
       await ctx.prisma.$transaction([
         ctx.prisma.room.update({
