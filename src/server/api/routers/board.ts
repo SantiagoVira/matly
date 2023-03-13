@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { invalidateRoom } from "~/pages/api/pusher";
+import * as sr from "seedrandom";
 
 import {
   createTRPCRouter,
@@ -55,11 +56,7 @@ export const boardRouter = createTRPCRouter({
         include: { tiles: true },
       });
 
-      console.log(board);
-
-      if (board?.tiles.filter((t) => t.value === -1).length) return;
-
-      console.log("\n\n It has the things \n\n", board);
+      if (board?.tiles.filter((t) => t.value === -1).length || !board) return;
 
       if (board?.tiles) {
         for (let y = 0; y < 5; y++) {
@@ -98,9 +95,7 @@ export const boardRouter = createTRPCRouter({
         data: { score: score },
       });
 
-      if (board) {
-        await invalidateRoom(board?.roomId, ctx.session.user);
-      }
+      await invalidateRoom(board?.roomId, ctx.session.user);
 
       return updateScore;
     }),
@@ -109,7 +104,6 @@ export const boardRouter = createTRPCRouter({
     .input(
       z.object({
         idx: z.number(),
-        value: z.number(),
         daily: z.boolean().default(false),
       })
     )
@@ -118,12 +112,29 @@ export const boardRouter = createTRPCRouter({
         where: input.daily
           ? { dailyUserId: ctx.session.user.id }
           : { userId: ctx.session.user.id },
-        select: { id: true },
+        select: { id: true, roomId: true, tiles: true },
       });
+      const room = await ctx.prisma.room.findUnique({
+        where: { id: board?.roomId },
+      });
+
+      console.log(board, room);
+
+      if (!room || !board) return;
+
+      const nums = new Array(25)
+        .fill(0)
+        .map(
+          (_, i) => Math.floor(sr.default(room.seed + i.toString())() * 10) + 1
+        );
+
+      const num_idx = board.tiles.filter((t) => t.value > 0).length;
+
+      console.log(num_idx, nums[num_idx]);
 
       return await ctx.prisma.tile.update({
         where: { boardId_idx: { boardId: board?.id ?? "", idx: input.idx } },
-        data: { value: input.value },
+        data: { value: nums[num_idx] },
       });
     }),
 });

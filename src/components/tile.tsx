@@ -31,7 +31,6 @@ const Tile: React.FC<{
         stepNext();
         setValue(nextVal);
         await placeNumber.mutateAsync({
-          value: nextVal,
           idx: idx,
           daily: router.pathname.endsWith("daily"),
         });
