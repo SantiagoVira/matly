@@ -13,10 +13,17 @@ export const gameRouter = createTRPCRouter({
         select: {
           members: {
             orderBy: { joinedRoomOn: "asc" },
-            include: { board: true },
           },
         },
       });
+
+      if (
+        !membersQuery?.members[0] ||
+        (membersQuery?.members[0] &&
+          ctx.session.user.id !== membersQuery?.members[0].id)
+      )
+        return;
+
       const makeBoards =
         membersQuery?.members.map((user) => {
           return ctx.prisma.user.update({
@@ -52,6 +59,22 @@ export const gameRouter = createTRPCRouter({
   reset: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const membersQuery = await ctx.prisma.room.findUnique({
+        where: { id: input.id },
+        select: {
+          members: {
+            orderBy: { joinedRoomOn: "asc" },
+          },
+        },
+      });
+
+      if (
+        !membersQuery?.members[0] ||
+        (membersQuery?.members[0] &&
+          ctx.session.user.id !== membersQuery?.members[0].id)
+      )
+        return;
+
       const end = await ctx.prisma.room.update({
         where: { id: input.id },
         data: { playing: false },
@@ -63,6 +86,22 @@ export const gameRouter = createTRPCRouter({
   end: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const membersQuery = await ctx.prisma.room.findUnique({
+        where: { id: input.id },
+        select: {
+          members: {
+            orderBy: { joinedRoomOn: "asc" },
+          },
+        },
+      });
+
+      if (
+        !membersQuery?.members[0] ||
+        (membersQuery?.members[0] &&
+          ctx.session.user.id !== membersQuery?.members[0].id)
+      )
+        return;
+
       const end = await ctx.prisma.room.delete({
         where: { id: input.id },
       });
