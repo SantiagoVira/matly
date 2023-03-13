@@ -39,7 +39,7 @@ const Tile: React.FC<{
     >
       <p
         className={cn(
-          "text-xl md:text-4xl",
+          "select-none text-xl md:text-4xl",
           value >= 0
             ? value === 10
               ? "text-highlight"
