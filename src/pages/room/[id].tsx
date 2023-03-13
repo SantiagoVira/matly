@@ -18,6 +18,7 @@ import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
 import CloseRoomButton from "~/components/room/close-room-button";
 import { useToast } from "~/utils/use-toast";
+import HowToLink from "~/components/how-to-link";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -188,6 +189,7 @@ const Room: React.FC = () => {
                 }}
               />
             </div>
+            <HowToLink />
           </div>
           {idx >= 25 && (
             <div className="flex flex-1 flex-col items-start justify-start">

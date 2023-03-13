@@ -11,6 +11,7 @@ import useWindowSize from "~/utils/useWindowSize";
 import SuperJSON from "superjson";
 import type { User } from "@prisma/client";
 import ShareScore from "~/components/room/share-score";
+import HowToLink from "~/components/how-to-link";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -136,6 +137,7 @@ const Room: React.FC = () => {
               }}
             />
           </div>
+          <HowToLink />
         </div>
       </div>
     </Layout>

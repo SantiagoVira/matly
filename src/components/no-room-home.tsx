@@ -5,8 +5,8 @@ import { api } from "~/utils/api";
 import clsx from "clsx";
 import { Input } from "./ui/input";
 import { useState } from "react";
-import Link from "next/link";
 import LinkButton from "./ui/link-button";
+import HowToLink from "./how-to-link";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
@@ -76,13 +76,7 @@ const NoRoomHome: React.FC = () => {
       <LinkButton href="/daily" className="text-highlight">
         Daily Game
       </LinkButton>
-      <p className="mt-4">
-        Check out how to play{" "}
-        <Link className="text-hightlight underline" href="/how-to">
-          here
-        </Link>
-        !
-      </p>
+      <HowToLink />
     </>
   );
 };

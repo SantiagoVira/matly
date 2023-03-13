@@ -6,6 +6,7 @@ import Button from "~/components/ui/button";
 import * as sr from "seedrandom";
 import useWindowSize from "~/utils/useWindowSize";
 import LocalBoard from "~/components/local-board";
+import HowToLink from "~/components/how-to-link";
 
 const LocalRoom: React.FC = () => {
   const router = useRouter();
@@ -126,6 +127,7 @@ const LocalRoom: React.FC = () => {
             changeBoard={setBoard}
           />
         </div>
+        <HowToLink />
       </div>
     </Layout>
   );

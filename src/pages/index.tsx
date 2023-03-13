@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
 import CurrentRoomHome from "~/components/current-room-home";
+import HowToLink from "~/components/how-to-link";
 import NoRoomHome from "~/components/no-room-home";
 import Layout from "~/components/shared/layout";
 import LinkButton from "~/components/ui/link-button";
@@ -74,13 +75,7 @@ const Home: NextPage = () => {
             to start playing with friends!
           </h2>
 
-          <p>
-            And check out how to play{" "}
-            <Link className="text-hightlight underline" href="/how-to">
-              here
-            </Link>
-            !
-          </p>
+          <HowToLink />
         </>
       ) : sessionData?.user.roomId ? (
         <CurrentRoomHome />
