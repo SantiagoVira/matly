@@ -61,7 +61,7 @@ const HowTo: React.FC = () => {
         In this case, the grouped numbers are highlighted. Going by rows, we see
         Row 1 has no matches. Row 2 has one match adding up to 2 points. Row 3
         has 2 groups, 1 adding to 8 and the other adding to 24. Row 4 has 1
-        group of 8 points and Row 5 hs a group of 12 and a group of 18. Doing
+        group of 8 points and Row 5 has a group of 12 and a group of 18. Doing
         the same thing to the columns and summing all values, we get a total
         score of 96.
         <br />
