@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 
   return (
     <Layout requireAuth={false}>
-      <h1 className="mt-10 text-7xl">
+      <h1 className="mt-10 text-center text-7xl">
         Let&apos;s <span className="font-extrabold text-highlight">PLAY</span>!
       </h1>
       <div className="w-full px-10 md:px-32">
