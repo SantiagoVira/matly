@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import LinkButton from "./ui/link-button";
 import HowToLink from "./how-to-link";
+import useWindowSize from "~/utils/useWindowSize";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const NoRoomHome: React.FC = () => {
   const roomExists = api.room.findUnique.useQuery({
     id: joinCode,
   });
+  const { isMobile } = useWindowSize();
 
   const createMutation = api.room.create.useMutation({
     onSuccess: async (e) => {
@@ -55,7 +57,7 @@ const NoRoomHome: React.FC = () => {
         <div className="flex">
           <Input
             className={clsx(
-              "h-10 w-32 rounded-r-none",
+              "h-10 w-[7.5rem] rounded-r-none md:w-32",
               error && "border border-rose-600"
             )}
             onKeyDown={async (e) => {
@@ -65,8 +67,11 @@ const NoRoomHome: React.FC = () => {
             }}
             onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
           />
-          <Button className="h-10 w-36 rounded-l-none shadow" onClick={onJoin}>
-            Join Room
+          <Button
+            className="h-10 w-16 rounded-l-none px-4 shadow md:w-36 md:p-0"
+            onClick={onJoin}
+          >
+            Join{isMobile ? "" : " Room"}
           </Button>
         </div>
 
