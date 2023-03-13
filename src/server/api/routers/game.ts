@@ -19,7 +19,6 @@ export const gameRouter = createTRPCRouter({
       });
       const makeBoards =
         membersQuery?.members.map((user) => {
-          console.log(user);
           return ctx.prisma.user.update({
             where: { id: user?.id ?? "" },
             data: {

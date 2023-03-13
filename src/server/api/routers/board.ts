@@ -47,7 +47,6 @@ export const boardRouter = createTRPCRouter({
   score: protectedProcedure
     .input(z.object({ daily: z.boolean().default(false) }))
     .mutation(async ({ ctx, input }) => {
-      console.log("\n\n\n HELLOOOOOO \n\n\n");
       let score = 0;
       const board = await ctx.prisma.board.findUnique({
         where: input.daily
@@ -118,19 +117,15 @@ export const boardRouter = createTRPCRouter({
         where: { id: board?.roomId },
       });
 
-      console.log(board, room);
+      if (!board) return;
 
-      if (!room || !board) return;
+      const seed = room?.seed ?? `${new Date().toDateString()}-daily-matly`;
 
       const nums = new Array(25)
         .fill(0)
-        .map(
-          (_, i) => Math.floor(sr.default(room.seed + i.toString())() * 10) + 1
-        );
+        .map((_, i) => Math.floor(sr.default(seed + i.toString())() * 10) + 1);
 
       const num_idx = board.tiles.filter((t) => t.value > 0).length;
-
-      console.log(num_idx, nums[num_idx]);
 
       return await ctx.prisma.tile.update({
         where: { boardId_idx: { boardId: board?.id ?? "", idx: input.idx } },

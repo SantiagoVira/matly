@@ -74,8 +74,6 @@ const Room: React.FC = () => {
     setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
   }, [board]);
 
-  console.log(board);
-
   const nums: number[] = useMemo(
     () =>
       new Array(25)
