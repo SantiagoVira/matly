@@ -11,9 +11,11 @@ const Board: React.FC<{
     | null
     | undefined;
   stepNext: () => void;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
   checkWin: () => void;
-}> = ({ nums, idx, board, stepNext, checkWin }) => {
+}> = ({ nums, idx, board, stepNext, loading, setLoading, checkWin }) => {
   return (
     <div className="grid h-[20rem] w-[20rem] grid-cols-5 grid-rows-5 md:h-[30rem] md:w-[30rem]">
       {board?.tiles.map((t, i) => (
@@ -21,6 +23,8 @@ const Board: React.FC<{
           key={i}
           idx={i}
           nextVal={nums[idx] ?? -1}
+          loading={loading}
+          setLoading={setLoading}
           stepNext={stepNext}
           checkWin={checkWin}
           val={t.value > 0 ? t.value : -1}

@@ -29,6 +29,7 @@ const Room: React.FC = () => {
   const { toast } = useToast();
 
   const [idx, setIdx] = useState(0);
+  const [loading, setLoading] = useState(false);
   const id = router.query.id?.toString();
 
   const startGame = api.game.start.useMutation({
@@ -181,6 +182,8 @@ const Room: React.FC = () => {
                 stepNext={() => {
                   setIdx((i) => i + 1);
                 }}
+                loading={loading}
+                setLoading={setLoading}
                 checkWin={() => {
                   if (idx + 1 === 25 && board?.score === -1) {
                     scoreBoard.mutate({});

@@ -120,7 +120,8 @@ export const boardRouter = createTRPCRouter({
       if (!board) return;
 
       const seed = input.daily
-        ? `${new Date().toDateString()}-daily-matly` : room?.seed ?? "helloworld";
+        ? `${new Date().toDateString()}-daily-matly`
+        : room?.seed ?? "helloworld";
 
       const nums = new Array(25)
         .fill(0)

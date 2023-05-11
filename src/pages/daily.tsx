@@ -20,6 +20,7 @@ const Room: React.FC = () => {
   const { isMobile } = useWindowSize();
 
   const [idx, setIdx] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const scoreBoard = api.board.score.useMutation({
     onSuccess: async () => {
@@ -129,6 +130,8 @@ const Room: React.FC = () => {
               stepNext={() => {
                 setIdx((i) => i + 1);
               }}
+              loading={loading}
+              setLoading={setLoading}
               checkWin={() => {
                 if (idx + 1 === 25 && board?.score === -1) {
                   scoreBoard.mutate({ daily: true });
