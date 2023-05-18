@@ -52,6 +52,8 @@ const HowTo: React.FC = () => {
               stepNext={() => ({})}
               checkWin={() => ({})}
               val={t}
+              loading={false}
+              setLoading={() => false}
               noHover
             />
           ))}
