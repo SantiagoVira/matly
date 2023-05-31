@@ -86,6 +86,7 @@ const Room: React.FC = () => {
         }
 
         document.dispatchEvent(new Event("visibilitychange"));
+        await ctx.board.invalidate();
       });
     }
 
