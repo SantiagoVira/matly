@@ -40,7 +40,7 @@ const Tile: React.FC<{
         idx % 5 === 0 && "border-l-2"
       )}
       onClick={async () => {
-        if (value !== -1 || loading) return;
+        if (value !== -1 || loading || placeNumber.isLoading) return;
         setLoading(true);
         stepNext();
         setValue(nextVal);
