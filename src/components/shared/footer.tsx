@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
           <Link
             className="text-highlight underline"
             target="_blank"
-            href="https://santiagovira.tech"
+            href="https://santiagovira.dev"
           >
             Santiago Vira
           </Link>
