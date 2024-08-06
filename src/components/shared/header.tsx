@@ -10,7 +10,7 @@ export const Header: React.FC<{ title?: string }> = ({ title }) => {
         content={`${title ? title + " | " : ""}Matly`}
       />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://matly.vercel.app" />
+      <meta property="og:url" content="https://matly.fun" />
       <meta
         property="og:description"
         content="Bringing ruthless competition back to numbers."

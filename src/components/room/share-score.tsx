@@ -13,13 +13,13 @@ const ShareScore: React.FC<{ score: number | undefined }> = ({ score }) => {
             text: `I scored ${
               score ?? 0
             } on today's daily Matly. Can you beat me?`,
-            url: "https://matly.vercel.app/daily",
+            url: "https://matly.fun/daily",
           });
         } else {
           await navigator.clipboard.writeText(
             `I scored ${
               score ?? 0
-            } on today's daily Matly. Can you beat me? https://matly.vercel.app/daily`
+            } on today's daily Matly. Can you beat me? https://matly.fun/daily`
           );
           toast({
             title: `Results copied to clipboard`,
