@@ -7,11 +7,10 @@ const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 
 const AlertDialogPortal = ({
-  className,
   children,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (
-  <AlertDialogPrimitive.Portal className={cn(className)} {...props}>
+  <AlertDialogPrimitive.Portal {...props}>
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       {children}
     </div>
@@ -112,7 +111,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-bg-300 py-2 px-4 text-sm font-semibold text-rose-600 transition-colors hover:bg-slate-300/40 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:bg-slate-300/90 disabled:cursor-not-allowed disabled:opacity-50 ",
+      "inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-bg-300 px-4 py-2 text-sm font-semibold text-rose-600 transition-colors hover:bg-slate-300/40 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:bg-slate-300/90 disabled:cursor-not-allowed disabled:opacity-50 ",
       className
     )}
     {...props}
@@ -127,7 +126,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      "mt-2 inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-bg-300 py-2 px-4 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-300/40 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:bg-slate-300/90 disabled:cursor-not-allowed disabled:opacity-50  sm:mt-0",
+      "mt-2 inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-bg-300 px-4 py-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-300/40 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:bg-slate-300/90 disabled:cursor-not-allowed disabled:opacity-50  sm:mt-0",
       className
     )}
     {...props}
