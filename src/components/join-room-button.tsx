@@ -79,9 +79,13 @@ export function JoinRoomButton() {
           {error && <p className="text-sm text-rose-600">{error}</p>}
         </div>
         <DialogFooter className="justify-end">
-          <DialogClose asChild>
-            <Button type="button">Close</Button>
-          </DialogClose>
+          <Button
+            type="button"
+            onClick={onJoin}
+            disabled={joinMutation.isLoading}
+          >
+            Join
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

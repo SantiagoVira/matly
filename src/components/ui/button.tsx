@@ -9,7 +9,7 @@ const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     <button
       {...rest}
       className={cn(
-        `text-100 h-fit rounded-lg bg-bg-300 px-3 py-[0.4rem] shadow hover:bg-slate-300/40 active:bg-slate-300/90 disabled:opacity-50`,
+        `text-100 h-fit rounded-lg bg-bg-300 px-3 py-[0.4rem] shadow hover:bg-slate-300/40 active:bg-slate-300/90 disabled:opacity-50 disabled:hover:bg-bg-300`,
         className
       )}
     >
