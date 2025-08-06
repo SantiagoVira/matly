@@ -21,35 +21,33 @@ const NoRoomHome: React.FC = () => {
   });
 
   return (
-    <>
-      <div className="grid w-full max-w-5xl grid-cols-6 grid-rows-4 gap-2">
-        <HomeScreenButton
-          className="col-span-3 row-span-2"
-          Icon={CreateRoomIcon}
-          onClick={() => createMutation.mutateAsync()}
-          title="Create room"
-        />
-        <JoinRoomButton />
-        <HomeScreenButton
-          className="col-span-2 row-span-2 row-start-3"
-          Icon={SingleplayerIcon}
-          href="/local"
-          title="Singleplayer"
-        />
-        <HomeScreenButton
-          className="col-span-2 col-start-3 row-span-2 row-start-3"
-          Icon={DailyIcon}
-          href="/daily"
-          title="Daily"
-        />
-        <HomeScreenButton
-          className="col-span-2 col-start-5 row-span-2 row-start-3"
-          Icon={HowToIcon}
-          href="/how-to"
-          title="How to play"
-        />
-      </div>
-    </>
+    <div className="flex min-h-[50vh] w-full max-w-5xl flex-col items-center justify-center gap-2 sm:grid sm:grid-cols-6 sm:grid-rows-4">
+      <HomeScreenButton
+        className="col-span-3 row-span-2"
+        Icon={CreateRoomIcon}
+        onClick={() => createMutation.mutateAsync()}
+        title="Create room"
+      />
+      <JoinRoomButton />
+      <HomeScreenButton
+        className="col-span-2 row-span-2 row-start-3"
+        Icon={SingleplayerIcon}
+        href="/local"
+        title="Singleplayer"
+      />
+      <HomeScreenButton
+        className="col-span-2 col-start-3 row-span-2 row-start-3"
+        Icon={DailyIcon}
+        href="/daily"
+        title="Daily"
+      />
+      <HomeScreenButton
+        className="col-span-2 col-start-5 row-span-2 row-start-3"
+        Icon={HowToIcon}
+        href="/how-to"
+        title="How to play"
+      />
+    </div>
   );
 };
 

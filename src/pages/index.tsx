@@ -54,7 +54,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <Layout requireAuth={false} className="px-24 py-10">
+    <Layout requireAuth={false} className="h-full px-6 py-10 sm:px-12 md:px-24">
       {status !== "authenticated" ? (
         <>
           <LinkButton href="/local">Singleplayer</LinkButton>

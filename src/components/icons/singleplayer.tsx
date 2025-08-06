@@ -1,5 +1,3 @@
-import { cn } from "~/utils/cn";
-
 const SingleplayerIcon: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
@@ -8,7 +6,7 @@ const SingleplayerIcon: React.FC<{ className?: string }> = ({
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className={cn("size-6", className)}
+      className={className}
     >
       <path
         fillRule="evenodd"
