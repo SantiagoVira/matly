@@ -51,7 +51,18 @@ const Room: React.FC = () => {
 
   const roomQuery = api.room.findUnique.useQuery({ id: id ?? "" });
   const room = roomQuery.data;
-  const boardQuery = api.board.findUnique.useQuery();
+  const boardQuery = api.board.findUnique.useQuery(void ``, {
+    onSuccess: (data) => {
+      const newIdx = data?.tiles?.filter((t) => t.value > 0).length ?? 0;
+      if (newIdx > idx || newIdx === 0) {
+        setIdx(newIdx);
+      }
+
+      if (data?.score === -1 && newIdx >= 25) {
+        scoreBoard.mutate({});
+      }
+    },
+  });
   const board = boardQuery.data;
 
   useEffect(() => {
@@ -97,11 +108,6 @@ const Room: React.FC = () => {
       }
     };
   }, [id, ctx, router, toast]);
-
-  useEffect(() => {
-    // Pick up previous progress
-    setIdx(board?.tiles?.filter((t) => t.value > 0).length ?? 0);
-  }, [board]);
 
   const nums: number[] = useMemo(
     () =>
