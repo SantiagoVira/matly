@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useRouter } from "next/router";
-import Button from "./ui/button";
 import { api } from "~/utils/api";
 import clsx from "clsx";
 import { Input } from "./ui/input";
 import { useState } from "react";
-import LinkButton from "./ui/link-button";
-import HowToLink from "./how-to-link";
 import useWindowSize from "~/utils/useWindowSize";
+import HomeScreenButton from "./home-screen-button";
+import CreateRoomIcon from "./icons/create-room";
+import JoinRoomIcon from "./icons/join-room";
+import SingleplayerIcon from "./icons/singleplayer";
+import DailyIcon from "./icons/daily";
+import HowToIcon from "./icons/how-to";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
@@ -50,38 +53,54 @@ const NoRoomHome: React.FC = () => {
 
   return (
     <>
-      <Button onClick={() => createMutation.mutateAsync()} className="mb-4">
-        Create Room
-      </Button>
-      <div className="flex flex-col items-start">
-        <div className="flex">
-          <Input
-            className={clsx(
-              "h-10 w-[7.5rem] rounded-r-none md:w-32",
-              error && "border border-rose-600"
-            )}
-            onKeyDown={async (e) => {
-              if (e.key === "Enter") {
-                await onJoin();
-              }
-            }}
-            onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
-          />
-          <Button
-            className="h-10 w-16 rounded-l-none px-4 shadow md:w-36 md:p-0"
-            onClick={onJoin}
-          >
-            Join{isMobile ? "" : " Room"}
-          </Button>
-        </div>
+      <div className="flex flex-col items-center">
+        <Input
+          className={clsx(
+            "h-10 w-[7.5rem] md:w-32",
+            error && "border border-rose-600"
+          )}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              await onJoin();
+            }
+          }}
+          onChange={(e) => setJoinCode(e.target.value.toLowerCase())}
+        />
 
         {error && <p className="text-sm text-rose-600">{error}</p>}
       </div>
-      <LinkButton href="/local">Singleplayer</LinkButton>
-      <LinkButton href="/daily" className="text-highlight">
-        Daily Game
-      </LinkButton>
-      <HowToLink />
+      <div className="grid w-full max-w-5xl grid-cols-6 grid-rows-4 gap-2">
+        <HomeScreenButton
+          className="col-span-3 row-span-2"
+          Icon={CreateRoomIcon}
+          onClick={() => createMutation.mutateAsync()}
+          title="Create room"
+        />
+        <HomeScreenButton
+          className="col-span-3 col-start-4 row-span-2"
+          Icon={JoinRoomIcon}
+          onClick={onJoin}
+          title="Join room"
+        />
+        <HomeScreenButton
+          className="col-span-2 row-span-2 row-start-3"
+          Icon={SingleplayerIcon}
+          href="/local"
+          title="Singleplayer"
+        />
+        <HomeScreenButton
+          className="col-span-2 col-start-3 row-span-2 row-start-3"
+          Icon={DailyIcon}
+          href="/daily"
+          title="Daily"
+        />
+        <HomeScreenButton
+          className="col-span-2 col-start-5 row-span-2 row-start-3"
+          Icon={HowToIcon}
+          href="/how-to"
+          title="How to play"
+        />
+      </div>
     </>
   );
 };
