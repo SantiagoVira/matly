@@ -17,6 +17,7 @@
     "@prisma/adapter-libsql": "^5.18.0",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-alert-dialog": "^1.0.3",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-toast": "^1.1.3",
     "@tanstack/react-query": "^4.20.2",
     "@trpc/client": "^10.9.0",
