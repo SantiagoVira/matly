@@ -35,6 +35,7 @@ const Room: React.FC = () => {
   const startGame = api.game.start.useMutation({
     onSuccess: async () => {
       await ctx.invalidate();
+      document.dispatchEvent(new Event("visibilitychange"));
     },
   });
   const resetGame = api.game.reset.useMutation({

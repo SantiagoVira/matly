@@ -75,6 +75,9 @@ export const gameRouter = createTRPCRouter({
       )
         return;
 
+      await ctx.prisma.board.deleteMany({
+        where: { roomId: input.id },
+      });
       const end = await ctx.prisma.room.update({
         where: { id: input.id },
         data: { playing: false },
