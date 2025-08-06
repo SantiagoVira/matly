@@ -152,6 +152,7 @@ const Room: React.FC = () => {
                   await resetGame.mutateAsync({ id: id ?? "" });
                 }}
                 className="font-medium text-highlight"
+                disabled={startGame.isLoading || resetGame.isLoading || loading}
               >
                 Reset{isMobile ? "" : " Game"}
               </Button>
@@ -162,6 +163,7 @@ const Room: React.FC = () => {
                   await startGame.mutateAsync({ id: id ?? "" });
                 }}
                 className="font-medium text-highlight"
+                disabled={startGame.isLoading || resetGame.isLoading || loading}
               >
                 Start
                 {isMobile ? "" : " Game"}
