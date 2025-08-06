@@ -9,7 +9,7 @@ const HomeScreenButton: React.FC<{
 }> = ({ Icon, href, title, onClick, className = "" }) => {
   const classNames = cn(
     "bg-bg-300 shadow hover:opacity-80 hover:shadow-md active:opacity-70 text-center",
-    "group rounded-2xl py-3 transition-all duration-300 active:scale-[0.99] md:py-8 px-8 sm:w-full w-2/3 h-full ",
+    "group rounded-2xl py-3 transition-all duration-300 active:scale-[0.99] md:py-8 px-8 sm:w-full w-3/4 h-full ",
     "flex sm:flex-col items-center justify-start sm:justify-center pl-12 sm:pl-8 gap-8 md:gap-8",
     className
   );
