@@ -19,6 +19,7 @@ import type { User } from "@prisma/client";
 import CloseRoomButton from "~/components/room/close-room-button";
 import { useToast } from "~/utils/use-toast";
 import HowToLink from "~/components/how-to-link";
+import { cn } from "~/utils/cn";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -180,7 +181,16 @@ const Room: React.FC = () => {
           <div className="flex flex-[2] flex-col items-center justify-center">
             <h3 className=" text-center">
               {idx >= 25 ? "Done!" : "Number: "}
-              <span className="text-highlight">{nums[idx]}</span>
+              {idx < 25 && (
+                <span
+                  className={cn(
+                    "inline-block w-12 text-highlight",
+                    loading && "text-transparent"
+                  )}
+                >
+                  {nums[idx]}
+                </span>
+              )}
             </h3>
             <div className="flex flex-col items-center justify-center">
               <Board
