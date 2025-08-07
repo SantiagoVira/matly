@@ -7,7 +7,7 @@ import * as sr from "seedrandom";
 import useWindowSize from "~/utils/useWindowSize";
 import LocalBoard from "~/components/local-board";
 import HowToLink from "~/components/how-to-link";
-import { calculateScoreOldLocal } from "~/utils/score-board";
+import { calculateScore } from "~/utils/score-board";
 
 const LocalRoom: React.FC = () => {
   const router = useRouter();
@@ -15,18 +15,7 @@ const LocalRoom: React.FC = () => {
 
   const [nums, setNums] = useState<number[]>();
   const [idx, setIdx] = useState(0);
-  const [score, setScore] = useState(0);
   const [board, setBoard] = useState<number[]>(new Array(25).fill(-1));
-
-  useEffect(() => {
-    // Finalize board scoring
-    if (idx === 25 && board.filter((t) => t === -1).length === 0) {
-      const newScore = calculateScoreOldLocal(board);
-
-      setScore(newScore);
-      setIdx(26);
-    }
-  }, [idx, setIdx, board]);
 
   useEffect(() => {
     const seed = Math.random().toString();
@@ -47,7 +36,6 @@ const LocalRoom: React.FC = () => {
           <Button
             onClick={() => {
               setBoard(new Array(25).fill(-1));
-              setScore(0);
               setIdx(0);
 
               const seed = Math.random().toString();
@@ -79,16 +67,17 @@ const LocalRoom: React.FC = () => {
         <hr className="w-full border-[#9e9e9e] " />
       </div>
       <div className="flex w-full flex-col items-center gap-6 md:gap-0">
-        <h3 className="mb-2 text-center">
-          {idx >= 25 ? (
-            <>
-              Done! Score: <span className="text-highlight">{score}</span>
-            </>
-          ) : (
-            "Number: "
-          )}
-          <span className="text-highlight">{nums ? nums[idx] : 0}</span>
-        </h3>
+        <div className="flex w-[20rem] items-end justify-between px-4 pb-3 md:w-[30rem]">
+          <p className="text-left text-2xl">
+            {idx >= 25 ? "Done!" : "Number: "}
+            {idx < 25 && (
+              <span className="inline-block w-12 font-bold text-highlight">
+                {nums ? nums[idx] : 0}
+              </span>
+            )}
+          </p>
+          <p className="text-right text-2xl">Score: {calculateScore(board)}</p>
+        </div>
         <div className="flex flex-col items-center justify-center">
           <LocalBoard
             nums={nums || []}

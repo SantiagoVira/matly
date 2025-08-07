@@ -25,6 +25,7 @@ const Tile: React.FC<{
 }) => {
   const [value, setValue] = useState(val);
   const router = useRouter();
+  const ctx = api.useUtils();
   const placeNumber = api.board.placeNumber.useMutation({
     onSuccess: () => setLoading(false),
   });
@@ -56,6 +57,8 @@ const Tile: React.FC<{
           idx: idx,
           daily: router.pathname.endsWith("daily"),
         });
+        await ctx.invalidate();
+        document.dispatchEvent(new Event("visibilitychange"));
         checkWin();
       }}
     >

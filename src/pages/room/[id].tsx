@@ -20,6 +20,7 @@ import CloseRoomButton from "~/components/room/close-room-button";
 import { useToast } from "~/utils/use-toast";
 import HowToLink from "~/components/how-to-link";
 import { cn } from "~/utils/cn";
+import { calculateScore } from "~/utils/score-board";
 
 const Room: React.FC = () => {
   const router = useRouter();
@@ -181,19 +182,24 @@ const Room: React.FC = () => {
       {room.playing ? (
         <div className="flex w-full flex-col items-center gap-6 md:flex-row md:items-start md:gap-0">
           <div className="flex flex-[2] flex-col items-center justify-center">
-            <h3 className=" text-center">
-              {idx >= 25 ? "Done!" : "Number: "}
-              {idx < 25 && (
-                <span
-                  className={cn(
-                    "inline-block w-12 text-highlight",
-                    loading && "text-transparent"
-                  )}
-                >
-                  {nums[idx]}
-                </span>
-              )}
-            </h3>
+            <div className="flex w-[20rem] items-end justify-between px-4 pb-3 md:w-[30rem]">
+              <p className="text-left text-2xl">
+                {idx >= 25 ? "Done!" : "Number: "}
+                {idx < 25 && (
+                  <span
+                    className={cn(
+                      "inline-block w-12 font-bold text-highlight",
+                      loading && "text-transparent"
+                    )}
+                  >
+                    {nums[idx]}
+                  </span>
+                )}
+              </p>
+              <p className="text-right text-2xl">
+                Score: {calculateScore(board?.tiles.map((t) => t.value) ?? [])}
+              </p>
+            </div>
             <div className="flex flex-col items-center justify-center">
               <Board
                 nums={nums}
