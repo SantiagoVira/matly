@@ -7,6 +7,7 @@ import * as sr from "seedrandom";
 import useWindowSize from "~/utils/useWindowSize";
 import LocalBoard from "~/components/local-board";
 import HowToLink from "~/components/how-to-link";
+import { calculateScoreOldLocal } from "~/utils/score-board";
 
 const LocalRoom: React.FC = () => {
   const router = useRouter();
@@ -20,35 +21,7 @@ const LocalRoom: React.FC = () => {
   useEffect(() => {
     // Finalize board scoring
     if (idx === 25 && board.filter((t) => t === -1).length === 0) {
-      let newScore = 0;
-
-      for (let y = 0; y < 5; y++) {
-        let streak = 1;
-        let lastNum = board[y * 5 + 0] ?? 0;
-        for (let x = 1; x < 5; x++) {
-          if (board[y * 5 + x] === lastNum) streak++;
-          else {
-            if (streak > 1) newScore += lastNum * streak;
-            streak = 1;
-          }
-          lastNum = board[y * 5 + x] ?? 0;
-        }
-        if (streak > 1) newScore += lastNum * streak;
-      }
-
-      for (let x = 0; x < 5; x++) {
-        let streak = 1;
-        let lastNum: number = board[x] ?? 0;
-        for (let y = 1; y < 5; y++) {
-          if (board[y * 5 + x] === lastNum) streak++;
-          else {
-            if (streak > 1) newScore += lastNum * streak;
-            streak = 1;
-          }
-          lastNum = board[y * 5 + x] ?? 0;
-        }
-        if (streak > 1) newScore += lastNum * streak;
-      }
+      const newScore = calculateScoreOldLocal(board);
 
       setScore(newScore);
       setIdx(26);
