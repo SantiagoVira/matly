@@ -16,7 +16,7 @@ import HowToLink from "~/components/how-to-link";
 const Room: React.FC = () => {
   const router = useRouter();
   const pusher = useRef<Pusher>();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { isMobile } = useWindowSize();
 
   const [idx, setIdx] = useState(0);

@@ -2,15 +2,15 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import HomeScreenButton from "./home-screen-button";
-import CreateRoomIcon from "./icons/create-room";
-import SingleplayerIcon from "./icons/singleplayer";
-import DailyIcon from "./icons/daily";
-import HowToIcon from "./icons/how-to";
+import CreateRoomIcon from "../icons/create-room";
+import SingleplayerIcon from "../icons/singleplayer";
+import DailyIcon from "../icons/daily";
+import HowToIcon from "../icons/how-to";
 import { JoinRoomButton } from "./join-room-button";
 
 const NoRoomHome: React.FC = () => {
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const createMutation = api.room.create.useMutation({
     onSuccess: async (e) => {

@@ -24,7 +24,7 @@ import { cn } from "~/utils/cn";
 const Room: React.FC = () => {
   const router = useRouter();
   const pusher = useRef<Pusher>();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { data: sessionData, status } = useSession();
   const { isMobile } = useWindowSize();
   const { toast } = useToast();

@@ -3,11 +3,12 @@ import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
-import CurrentRoomHome from "~/components/current-room-home";
+import CurrentRoomHome from "~/components/home/current-room-home";
 import HowToLink from "~/components/how-to-link";
-import NoRoomHome from "~/components/no-room-home";
+import NoRoomHome from "~/components/home/no-room-home";
 import Layout from "~/components/shared/layout";
 import LinkButton from "~/components/ui/link-button";
+import SignedOutHome from "~/components/home/signed-out-home";
 const Home: NextPage = () => {
   const { data: sessionData, status } = useSession();
 
@@ -56,21 +57,7 @@ const Home: NextPage = () => {
   return (
     <Layout requireAuth={false} className="h-full px-6 py-10 sm:px-12 md:px-24">
       {status !== "authenticated" ? (
-        <>
-          <LinkButton href="/local">Singleplayer</LinkButton>
-          <h2 className="my-3 w-3/4 text-center md:w-[28rem]">
-            <Link
-              className="underline hover:cursor-pointer"
-              href="/"
-              onClick={() => signIn("google")}
-            >
-              Sign in
-            </Link>{" "}
-            to start playing with friends!
-          </h2>
-
-          <HowToLink />
-        </>
+        <SignedOutHome />
       ) : sessionData?.user.roomId ? (
         <CurrentRoomHome />
       ) : (

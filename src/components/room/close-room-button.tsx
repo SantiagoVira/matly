@@ -17,7 +17,7 @@ import useWindowSize from "~/utils/useWindowSize";
 
 const CloseRoomButton: React.FC<{ id: string | undefined }> = ({ id }) => {
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { isMobile } = useWindowSize();
   const endGame = api.game.end.useMutation({
     onSuccess: async () => {

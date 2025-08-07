@@ -2,7 +2,6 @@
 import Button from "~/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -12,7 +11,7 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import HomeScreenButton from "./home-screen-button";
-import JoinRoomIcon from "./icons/join-room";
+import JoinRoomIcon from "../icons/join-room";
 import { cn } from "~/utils/cn";
 import { api } from "~/utils/api";
 import { useState } from "react";
@@ -20,7 +19,7 @@ import { useRouter } from "next/router";
 
 export function JoinRoomButton() {
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const [error, setError] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const roomExists = api.room.findUnique.useQuery({
